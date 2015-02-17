@@ -60,3 +60,6 @@ target/
 # Buildout
 bin/
 src/
+
+# Sublime Text
+*.sublime-workspace
