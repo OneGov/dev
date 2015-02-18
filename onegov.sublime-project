@@ -8,7 +8,8 @@
                 "develop-eggs",
                 "dist",
                 "eggs",
-                "*.egg-info"
+                "*.egg-info",
+                "docs/_build"
             ]
         }
     ]
