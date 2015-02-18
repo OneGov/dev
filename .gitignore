@@ -63,3 +63,6 @@ src/
 
 # Sublime Text
 *.sublime-workspace
+
+# Docs
+docs/
