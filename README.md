@@ -9,3 +9,5 @@ Run this to get started:
     bin/buildout
 
 Requires Python 3.4 (onegov packages are compatible with 2.7 though).
+
+More info: http://onegov.readthedocs.org/en/latest
