@@ -1,0 +1,26 @@
+applications:
+  - path: /towns/*
+    application: onegov.town.TownApp
+    namespace: towns
+    configuration:
+      dsn: postgres://user:password@localhost:5432/database
+      identity_secure: false
+      identity_secret: very-secret-key
+
+logging:
+  formatters:
+      simpleFormater:
+          format: '%(asctime)s - %(levelname)s: %(message)s'
+          datefmt: '%Y-%m-%d %H:%M:%S'
+
+  handlers:
+      console:
+          class: logging.StreamHandler
+          formatter: simpleFormater
+          level: DEBUG
+          stream: ext://sys.stdout
+
+  loggers:
+      onegov.core:
+          level: DEBUG
+          handlers: [console]

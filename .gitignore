@@ -66,3 +66,6 @@ src/
 
 # Docs
 docs/
+
+# Default config file
+onegov.yml
