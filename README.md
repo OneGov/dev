@@ -44,7 +44,7 @@ Now before you can start your server, you need to define a town. Run the
 following to define a new town, as there is currently no way to do it through
 the web interface.
 
-    bin/onegov-town --dns 'postgres://user:password@localhost:5432/database' --scheme towns-govikon add Govikon 
+    bin/onegov-town --dsn 'postgres://user:password@localhost:5432/database' --schema towns-govikon add Govikon 
 
 Having done that, start the onegov server as follows:
 
