@@ -51,7 +51,7 @@ Having done that, start the onegov server as follows:
     bin/onegov-server
 
 And point your browser to
-[https://localhost:8080/towns/govikon](https://localhost:8080/towns/govikon).
+[http://localhost:8080/towns/govikon](http://localhost:8080/towns/govikon).
 
 ## Run Tests
 
