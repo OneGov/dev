@@ -6,7 +6,16 @@ About OneGov: http://onegov.readthedocs.org/en/latest
 
 Requires Python 3.4 (onegov packages are compatible with 2.7 though).
 
-To install do this:
+Before you can proceed, you have to make sure the following packages are
+installed:
+
+    - libmemcached
+
+On OSX this can be done thusly (if you are using homebrew, which you should):
+
+    brew install libmemcached
+
+Having done that, proceed like this:
 
     git clone https://github.com/onegov/dev onegov
     cd onegov
