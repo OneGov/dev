@@ -43,3 +43,21 @@ Having done that, start the onegov server as follows:
 
 And point your browser to
 [https://localhost:8080/towns/govikon](https://localhost:8080/towns/govikon).
+
+## Run Tests
+
+To run the tests of a specific module:
+
+    bin/py.test src/onegov.core
+    bin/py.test src/onegov.town
+    bin/py.test src/onegov.user
+
+And so on.
+
+    bin/py.test src/onegov.*
+
+Doesn't really work because pytest gets confused.
+
+To run a specific test:
+
+    bin/py.test src/onegov.core -k test_my_test
