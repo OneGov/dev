@@ -70,3 +70,19 @@ Doesn't really work because pytest gets confused.
 To run a specific test:
 
     bin/py.test src/onegov.core -k test_my_test
+
+
+## Internationalization (i18n)
+
+To use i18n, gettext must be installed. On most linux distros this is a given.
+On OSX it is recommended to install gettext with homebrew:
+
+    brew install gettext
+
+### Add a language to a module:
+
+    bash i18n.sh onegov.town de
+
+### Extract the messages from a module (update the translation files)
+
+    bash i18n.sh onegov.town
