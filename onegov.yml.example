@@ -6,6 +6,10 @@ applications:
       dsn: postgres://user:password@localhost:5432/database
       identity_secure: false
       identity_secret: very-secret-key
+      filestorage: fs.osfs.OSFS
+      filestorage_options:
+        root_path: './file-storage'
+        create: true
 
 logging:
   formatters:

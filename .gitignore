@@ -69,3 +69,6 @@ docs/
 
 # Default config file
 onegov.yml
+
+# Default file storage
+file-storage
