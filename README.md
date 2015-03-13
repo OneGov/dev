@@ -6,16 +6,13 @@ About OneGov: http://onegov.readthedocs.org/en/latest
 
 Requires Python 3.4 (onegov packages are compatible with 2.7 though).
 
-Before you can proceed, you have to make sure the following packages are
-installed:
+OneGov requires the following packages:
 
     - libmemcached
+    - libxml2
+    - libxslt
 
-On OSX this can be done thusly (if you are using homebrew, which you should):
-
-    brew install libmemcached
-
-Having done that, proceed like this:
+Those should be downlaoded and built automatically when you run buildout:
 
     git clone https://github.com/onegov/dev onegov
     cd onegov
