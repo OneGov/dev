@@ -72,3 +72,6 @@ onegov.yml
 
 # Default file storage
 file-storage
+
+# Buildout fragments
+distribute-*.tar.gz
