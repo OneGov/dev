@@ -108,3 +108,9 @@ On OSX it is recommended to install gettext with homebrew:
 ### Extract the messages from a module (update the translation files)
 
     bash i18n.sh onegov.town
+
+### Buildout Build Status
+
+Travis tests if this buildout actually works. Current status:
+
+    [![Build Status](https://travis-ci.org/OneGov/dev.svg?branch=master)](https://travis-ci.org/OneGov/dev)
