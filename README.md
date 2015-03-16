@@ -113,4 +113,4 @@ On OSX it is recommended to install gettext with homebrew:
 
 Travis tests if this buildout actually works. Current status:
 
-    [![Build Status](https://travis-ci.org/OneGov/dev.svg?branch=master)](https://travis-ci.org/OneGov/dev)
+[![Build Status](https://travis-ci.org/OneGov/dev.svg?branch=master)](https://travis-ci.org/OneGov/dev)
