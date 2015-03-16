@@ -68,6 +68,20 @@ To run a specific test:
 
     bin/py.test src/onegov.core -k test_my_test
 
+## Run Tests with Tox
+
+To run the tests with tox:
+
+    pip install tox
+    bash tox.sh onegov.core
+    bash tox.sh onegov.town
+    bash tox.sh onegov.user
+
+And so on.
+
+To run a specific test:
+
+    bash tox.sh onegov.core -- -k test_my_test
 
 ## Internationalization (i18n)
 
