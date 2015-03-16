@@ -1,0 +1,9 @@
+# runs the buildout and tests onegov.town, because that's the package that
+# requires all the dependencies
+language: python
+python: "3.4"
+install:
+    - virtualenv --no-setuptools .
+    - bin/python bootstrap.py
+    - bin/buildout
+script: bin/py.test src/onegov.town
