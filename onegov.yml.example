@@ -29,3 +29,6 @@ logging:
       onegov.core:
           level: DEBUG
           handlers: [console]
+      onegov.town:
+          level: DEBUG
+          handlers: [console]
