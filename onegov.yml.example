@@ -6,6 +6,7 @@ applications:
       dsn: postgres://user:password@localhost:5432/database
       identity_secure: false
       identity_secret: very-secret-key
+      csrf_secret: another-very-secret-key
       always_compile_theme: false
       filestorage: fs.osfs.OSFS
       filestorage_options:
