@@ -46,7 +46,7 @@ fi
 if command_exists brew; then
     if brew list | grep gettext -q; then
         BREW_PREFIX=$(brew --prefix)
-        GETTEXT_PATH=$(brew info gettext | grep "${BREW_PREFIX}" | awk '{print $1;}')
+        GETTEXT_PATH=$(brew info gettext | grep "${BREW_PREFIX}" | awk '{print $1; exit}')
 
         MSGINIT="${GETTEXT_PATH}/bin/msginit"
         MSGMERGE="${GETTEXT_PATH}/bin/msgmerge"
