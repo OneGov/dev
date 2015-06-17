@@ -75,3 +75,6 @@ file-storage
 
 # Buildout fragments
 distribute-*.tar.gz
+
+# IPython notebooks
+notebooks/
