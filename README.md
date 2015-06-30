@@ -39,7 +39,7 @@ probably want to run onegov.town though, the first such application.
 To do this, make sure you have Postgres 9.1+ running locally, with a database
 designated to running your application.
 
-Once you do, copy `onegov.yml.example` and edit the dns string inside the
+Once you do, copy `onegov.yml.example` and edit the dns string inside
 the resulting `onegov.yml` file:
 
     cp onegov.yml.example onegov.yml
