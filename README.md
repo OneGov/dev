@@ -49,8 +49,8 @@ Then edit the following line in `onegov.yml`:
     dsn: postgres://user:password@localhost:5432/database
 
 Now before you can start your server, you need to define a town. Run the
-following to define a new town, as there is currently no way to do it through
-the web interface.
+following command to define a new town (there is currently no way to do it
+through the web interface).
 
     bin/onegov-town --dsn 'postgres://user:password@localhost:5432/database' --schema towns-govikon add Govikon 
 
