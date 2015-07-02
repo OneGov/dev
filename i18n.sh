@@ -113,7 +113,7 @@ $POT_CREATE "${SEARCH_PATH}" -o "${POT_FILE}"
 
 echo "Update translations"
 for po in "${LOCALE_PATH}"/*/LC_MESSAGES/$DOMAIN.po; do
-    $MSGMERGE -o "${po}" "${po}" "${POT_FILE}"
+    $MSGMERGE --no-location --no-fuzzy-matching -o "${po}" "${po}" "${POT_FILE}"
 done
 
 echo "Compile message catalogs"
