@@ -52,7 +52,7 @@ Now before you can start your server, you need to define a town. Run the
 following command to define a new town (there is currently no way to do it
 through the web interface).
 
-    bin/onegov-town --dsn 'postgres://user:password@localhost:5432/database' --schema towns-govikon add Govikon 
+    bin/onegov-town --dsn 'postgres://user:password@localhost:5432/database' --schema towns-govikon add Govikon
 
 Having done that, start the onegov server as follows:
 
@@ -108,6 +108,16 @@ On OSX it is recommended to install gettext with homebrew:
 ### Extract the messages from a module (update the translation files)
 
     bash i18n.sh onegov.town
+
+### SCSS Linting
+
+We use https://github.com/brigade/scss-lint to lint our scss files. The linter
+configuration is found in the local directory (`./.scss-lint.yml`).
+
+In Sublime Text the linter should pick this file up when using the
+`onegov.sublime-project` file. Though it might require a restart.
+
+Other editors are not directly supported, so you are on your own.
 
 ### Buildout Build Status
 
