@@ -13,6 +13,12 @@ applications:
         create: true
       always_compile_theme: false
       sql_query_report: false
+      mail_host: localhost
+      mail_port: 1025
+      mail_force_tls: false
+      mail_username:
+      mail_password:
+      mail_sender: mail@onegovcloud.ch
 
 logging:
   formatters:
