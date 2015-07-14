@@ -117,6 +117,9 @@ configuration is found in the local directory (`./.scss-lint.yml`).
 In Sublime Text the linter should pick this file up when using the
 `onegov.sublime-project` file. Though it might require a restart.
 
+In Atom the https://atom.io/packages/linter-scss-lint will pick up the right
+configuration file per default.
+
 Other editors are not directly supported, so you are on your own.
 
 ### Buildout Build Status
