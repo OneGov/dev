@@ -54,6 +54,11 @@ through the web interface).
 
     bin/onegov-town --dsn 'postgres://user:password@localhost:5432/database' --schema towns-govikon add Govikon
 
+You also might want to define an admin to manage the site. Run the following
+command to define a user with admin role.
+
+    bin/onegov-user --dsn 'postgres://user:password@localhost:5432/database' --schema towns-govikon add admin admin@example.org
+
 Having done that, start the onegov server as follows:
 
     bin/onegov-server
