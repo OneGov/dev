@@ -19,6 +19,8 @@ applications:
       mail_username:
       mail_password:
       mail_sender: mail@onegovcloud.ch
+      mail_use_directory: true
+      mail_directory: './mails'
 
 logging:
   formatters:

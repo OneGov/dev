@@ -78,3 +78,6 @@ distribute-*.tar.gz
 
 # IPython notebooks
 notebooks/
+
+# Default mail directory
+mails/
