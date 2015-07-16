@@ -81,3 +81,6 @@ notebooks/
 
 # Default mail directory
 mails/
+
+# Default sql dump
+dump.sql
