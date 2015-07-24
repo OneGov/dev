@@ -51,6 +51,7 @@ if command_exists brew; then
         MSGINIT="${GETTEXT_PATH}/bin/msginit"
         MSGMERGE="${GETTEXT_PATH}/bin/msgmerge"
         MSGFMT="${GETTEXT_PATH}/bin/msgfmt"
+        XGETTEXT="${GETTEXT_PATH}/bin/xgettext"
     else
         echo "Homebrew was found but gettext is not installed"
         die  "Install gettext using 'brew install gettext'"
@@ -59,6 +60,7 @@ else
     MSGINIT=$(which msginit)
     MSGMERGE=$(which msgmerge)
     MSGFMT=$(which msgfmt)
+    XGETTEXT=$(which xgettext)
 fi
 
 if [ ! -e "${MSGINIT}" ]; then
@@ -71,6 +73,10 @@ fi
 
 if [ ! -e "${MSGFMT}" ]; then
     die "msgfmt command could not be found, be sure to install gettext"
+fi
+
+if [ ! -e "${XGETTEXT}" ]; then
+    die "xgettext command could not be found, be sure to install gettext"
 fi
 
 if [ ! -d "${MODULE_PATH}" ]; then
@@ -110,6 +116,7 @@ fi
 
 echo "Extract messages"
 $POT_CREATE "${SEARCH_PATH}" -o "${POT_FILE}"
+find ${SEARCH_PATH} -name "*.js" | xargs $XGETTEXT --from-code=UTF-8 --keyword --keyword=_l --join-existing -o "${POT_FILE}"
 
 echo "Update translations"
 for po in "${LOCALE_PATH}"/*/LC_MESSAGES/$DOMAIN.po; do
