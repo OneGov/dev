@@ -84,10 +84,9 @@ To run a specific test:
 
     bin/py.test src/onegov.core -k test_my_test
 
-To debug a specific test (xdist does not support PDB at the moment), disable
-the additional ops in pytest.ini and run the test with '-p no:xdist'
+To run tests in parallel (for faster execution):
 
-    bin/py.test src/onegov.core -p no:xdist -k test_my_test
+    bin/py.test src/onegov.core --tx='4*popen//python=bin/py' --dist=load
 
 ## Run Tests with Tox
 
