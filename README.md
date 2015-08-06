@@ -8,7 +8,6 @@ Requires Python 3.4 (onegov packages are compatible with 2.7 though).
 
 OneGov requires the following packages:
 
-    - libmemcached
     - libxml2
     - libxslt
 
