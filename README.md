@@ -102,6 +102,14 @@ To run a specific test:
 
     bash tox.sh onegov.core -- -k test_my_test
 
+## Profiling
+
+To profile all requests, set `profile` in the onegov.yml to `true`. This will
+result in a timestamp profile file in the profiles folder for each request.
+
+You may then use the pstats profile browser as described here:
+http://stefaanlippens.net/python_profiling_with_pstats_interactive_mode
+
 ## Internationalization (i18n)
 
 To use i18n, gettext must be installed. On most linux distros this is a given.

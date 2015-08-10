@@ -13,6 +13,7 @@ applications:
         create: true
       always_compile_theme: false
       sql_query_report: false
+      profile: false
       mail_host: localhost
       mail_port: 1025
       mail_force_tls: false

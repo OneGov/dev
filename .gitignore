@@ -84,3 +84,6 @@ mails/
 
 # Default sql dump
 dump.sql
+
+# Profiles
+profiles/
