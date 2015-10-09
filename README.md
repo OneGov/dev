@@ -4,7 +4,7 @@ About OneGov: http://onegov.readthedocs.org/en/latest
 
 ## Install the Development Environment
 
-Requires Python 3.4 (onegov packages are compatible with 2.7 though).
+Requires Python 3.4+.
 
 OneGov requires the following packages:
 
@@ -14,8 +14,7 @@ OneGov requires the following packages:
 Those should be downlaoded and built automatically when you run buildout.
 
 For that to work you need the python development files. On OSX those should
-be already installed if you installed Python 3 trough homebrew (which you
-should).
+be already installed if you installed Python 3 trough homebrew.
 
 On other POSIX platforms you might have to install them. On Ubuntu for example,
 you need to run:
