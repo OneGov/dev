@@ -3,7 +3,6 @@
 language: python
 python: "3.4"
 install:
-    - virtualenv --no-setuptools .
-    - bin/python bootstrap.py
+    - python bootstrap.py
     - bin/buildout
 script: bin/py.test src/onegov.town
