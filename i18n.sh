@@ -16,15 +16,6 @@ POT_FILE="${LOCALE_PATH}/${DOMAIN}.pot"
 
 POT_CREATE="${SCRIPTPATH}/bin/pot-create"
 
-read -r -d '' PO_FILE_HEADER <<'EOF'
-msgid ""
-msgstr ""
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-EOF
-
 function show_usage() {
     echo "Usage: bash i18n.sh module-name [language]"
     echo ""
@@ -118,7 +109,6 @@ if [ -n "${LANGUAGE}" ]; then
     domainfile="${LANGUAGE}/LC_MESSAGES/${DOMAIN}.po"
 
     $MSGINIT -i "${DOMAIN}.pot" -o "${domainfile}" -l "${LANGUAGE}"
-    echo "${PO_FILE_HEADER}"|cat - "${domainfile}" > /tmp/pofile && mv /tmp/pofile "${domainfile}"
 fi
 
 echo "Extract messages"
