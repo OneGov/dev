@@ -16,10 +16,12 @@ POT_FILE="${LOCALE_PATH}/${DOMAIN}.pot"
 
 POT_CREATE="${SCRIPTPATH}/bin/pot-create"
 
-if echo "${LANGUAGE}" | egrep -v '^[a-z]{2}(_[A-Z]{2})?$' > /dev/null; then
-    echo "Invalid language code, format like this: de_CH, en_GB, en, de, ..."
-    echo "the language code is lowercased, the optional country code is uppercased"
-    exit 1
+if [ "${LANGUAGE}" != "" ]; then
+    if echo "${LANGUAGE}" | egrep -v '^[a-z]{2}(_[A-Z]{2})?$' > /dev/null; then
+        echo "Invalid language code, format like this: de_CH, en_GB, en, de, ..."
+        echo "the language code is lowercased, the optional country code is uppercased"
+        exit 1
+    fi
 fi
 
 function show_usage() {
