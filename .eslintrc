@@ -21,7 +21,7 @@
         "brace-style": [0, "1tbs", {"allowSingleLine": false}],
         "callback-return": 0,
         "camelcase": [0, {"properties": "always"}],
-        "comma-dangle": 0,
+        "comma-dangle": [2, "never"],
         "comma-spacing": [1, {"before": false, "after": true}],
         "comma-style": [1, "last"],
         "complexity": [1, 10],
