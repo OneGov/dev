@@ -11,7 +11,7 @@ OneGov requires the following packages:
     - libxml2
     - libxslt
 
-Those should be downlaoded and built automatically when you run buildout.
+Those should be downloaded and built automatically when you run buildout.
 
 For that to work you need the python development files. On OSX those should
 be already installed if you installed Python 3 trough homebrew.
@@ -21,12 +21,17 @@ you need to run:
 
     sudo apt-get install python3-dev
 
+You might also have to install the following packages on Ubuntu (if you're
+really starting from scratch):
+
+    sudo apt-get install git python-virtualenv
+
 Having done all that, run buildout:
 
     git clone https://github.com/onegov/dev onegov
     cd onegov
-    virtualenv -p python34 --no-site-packages .
-    python bootstrap.py
+    virtualenv -p python3.4 --no-site-packages .
+    bin/python bootstrap.py
     bin/buildout
 
 ## Run an Application
