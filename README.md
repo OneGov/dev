@@ -102,7 +102,7 @@ Having done that, start the onegov server as follows:
     bin/onegov-server
 
 And point your browser to
-[http://localhost:8080/election_day/zg](http://localhost:8080/election_day/zg).
+[http://localhost:8080/wahlen/zg](http://localhost:8080/wahlen/zg).
 
 ## Run Tests
 
