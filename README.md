@@ -34,7 +34,7 @@ Having done all that, run buildout:
 OneGov supports different applications under different paths. Usually you
 probably want to run onegov.town though, the first such application.
 
-To do this, make sure you have Postgres 9.1+ running locally, with a database
+To do this, make sure you have Postgres 9.3+ running locally, with a database
 designated to running your application.
 
 Once you do, copy `onegov.yml.example` and edit the dns string inside
