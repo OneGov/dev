@@ -19,16 +19,11 @@ be already installed if you installed Python 3 trough homebrew.
 On other POSIX platforms you might have to install them. On Ubuntu for example,
 you need to run:
 
-    sudo apt-get install python3-dev
+    sudo apt-get install git python3-dev python-virtualenv
 
-On Ubuntu you might also require the following files:
+You also need to have the following header files installed:
 
-    sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev
-
-You might also have to install the following packages on Ubuntu (if you're
-really starting from scratch):
-
-    sudo apt-get install git python-virtualenv
+    sudo apt-get install libcurl4-openssl-dev libffi-dev libjpeg-dev libpq-dev libxml2-dev libxslt1-dev zlib1g-dev
 
 Having done all that, run buildout:
 
@@ -38,13 +33,14 @@ Having done all that, run buildout:
     bin/python bootstrap.py
     bin/buildout
 
-## Run an Application
+## Setup Database
 
 OneGov supports different applications under different paths. Usually you
-probably want to run onegov.town though, the first such application.
+probably want to run onegov.town though, the first such application. You can
+have different applications run on the same database though.
 
-To do this, make sure you have Postgres 9.3+ running locally, with a database
-designated to running your application.
+To prepare a database, make sure you have Postgres 9.3+ running locally,
+with a database designated to running your application.
 
 Once you do, copy `onegov.yml.example` and edit the dns string inside
 the resulting `onegov.yml` file:
@@ -55,7 +51,9 @@ Then edit the following line in `onegov.yml`:
 
     dsn: postgres://user:password@localhost:5432/database
 
-Now before you can start your server, you need to define a town. Run the
+## Setup OneGov Town
+
+To use OneGov Town you need to define a town first. Run the
 following command to define a new town (there is currently no way to do it
 through the web interface).
 
@@ -72,6 +70,39 @@ Having done that, start the onegov server as follows:
 
 And point your browser to
 [http://localhost:8080/towns/govikon](http://localhost:8080/towns/govikon).
+
+## Setup OneGov Election Day
+
+To use OneGov Election Day you need to define a so called principal. That's
+basically the canton using the application.
+
+To do this for the canton of zg for example you create the following directory:
+
+    mkdir -p file-storage/election_day-zg
+
+Then you create a file containing the information about the canton:
+
+    touch file-storage/election_day-zg/principal.yml
+
+Inside you configure the principal (example content):
+
+    name: Kanton Zug
+    logo: logo.svg
+    canton: zg
+    color: #234B85
+
+The logo points to a file in the same directory as the yml file.
+
+You also want to add a user, which you can do as follows:
+
+    bin/onegov-user --dsn 'postgres://user:password@localhost:5432/database' --schema election_day-zg add admin admin@example.org
+
+Having done that, start the onegov server as follows:
+
+    bin/onegov-server
+
+And point your browser to
+[http://localhost:8080/election_day/zg](http://localhost:8080/election_day/zg).
 
 ## Run Tests
 
