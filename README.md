@@ -21,6 +21,10 @@ you need to run:
 
     sudo apt-get install python3-dev
 
+On Ubuntu you might also require the following files:
+
+    sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev
+
 You might also have to install the following packages on Ubuntu (if you're
 really starting from scratch):
 
