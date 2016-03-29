@@ -22,6 +22,7 @@ applications:
       mail_sender: mail@onegovcloud.ch
       mail_use_directory: true
       mail_directory: './mails'
+      mapbox_token:
 
   - path: /wahlen/*
     application: onegov.election_day.ElectionDayApp
