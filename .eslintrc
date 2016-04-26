@@ -228,6 +228,6 @@
         "vars-on-top": 0,
         "wrap-iife": [2, "inside"],
         "wrap-regex": 1,
-        "yoda": [1, "never"],
+        "yoda": [0, "never"],
     }
 }
