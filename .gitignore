@@ -87,3 +87,6 @@ dump.sql
 
 # Custom buildout config
 custom.cfg
+
+# Access databases for migrations
+*.mdb
