@@ -95,7 +95,7 @@ The logo points to a file in the same directory as the yml file.
 
 You also want to add a user, which you can do as follows:
 
-    bin/onegov-user --select '/election_day/zg' add admin admin@example.orgadmin admin@example.org
+    bin/onegov-user --select '/election_day/zg' add admin admin@example.org
 
 Having done that, start the onegov server as follows:
 
