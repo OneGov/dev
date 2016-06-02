@@ -89,13 +89,13 @@ Inside you configure the principal (example content):
     name: Kanton Zug
     logo: logo.svg
     canton: zg
-    color: #234B85
+    color: '#234B85'
 
 The logo points to a file in the same directory as the yml file.
 
 You also want to add a user, which you can do as follows:
 
-    bin/onegov-user --dsn 'postgres://user:password@localhost:5432/database' --schema election_day-zg add admin admin@example.org
+    bin/onegov-user --select '/election_day/zg' add admin admin@example.orgadmin admin@example.org
 
 Having done that, start the onegov server as follows:
 
