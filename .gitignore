@@ -90,3 +90,6 @@ custom.cfg
 
 # Access databases for migrations
 *.mdb
+
+# PIP
+pip.selfcheck.json
