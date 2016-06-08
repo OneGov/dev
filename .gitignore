@@ -92,4 +92,4 @@ custom.cfg
 *.mdb
 
 # PIP
-pip.selfcheck.json
+pip-selfcheck.json
