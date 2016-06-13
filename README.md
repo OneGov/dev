@@ -57,12 +57,12 @@ To use OneGov Town you need to define a town first. Run the
 following command to define a new town (there is currently no way to do it
 through the web interface).
 
-    bin/onegov-town --dsn 'postgres://user:password@localhost:5432/database' --schema towns-govikon add Govikon
+    bin/onegov-town --select towns/govikon add Govikon
 
 You also might want to define an admin to manage the site. Run the following
 command to define a user with admin role.
 
-    bin/onegov-user --dsn 'postgres://user:password@localhost:5432/database' --schema towns-govikon add admin admin@example.org
+    bin/onegov-user --select /towns/govikon add admin admin@example.org --no-prompt --password test
 
 Having done that, start the onegov server as follows:
 
