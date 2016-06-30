@@ -15,6 +15,7 @@ LOCALE_PATH="${SEARCH_PATH}/locale"
 POT_FILE="${LOCALE_PATH}/${DOMAIN}.pot"
 
 POT_CREATE="${SCRIPTPATH}/bin/pot-create"
+POJSON=$(which pojson)
 
 if [ "${LANGUAGE}" != "" ]; then
     if echo "${LANGUAGE}" | egrep -v '^[a-z]{2}(_[A-Z]{2})?$' > /dev/null; then
@@ -137,4 +138,9 @@ done
 echo "Compile message catalogs"
 for po in "${LOCALE_PATH}"/*/LC_MESSAGES/*.po; do
     $MSGFMT -o "${po%.*}.mo" "$po"
+done
+
+echo "Compile message catalogs"
+for po in "${LOCALE_PATH}"/*/LC_MESSAGES/*.po; do
+    $POJSON -e UTF-8 -p "$po" > "${po%.*}.json"
 done
