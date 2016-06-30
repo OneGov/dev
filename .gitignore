@@ -22,6 +22,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+include/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -81,3 +82,15 @@ notebooks/
 
 # Default mail directory
 mails/
+
+# Default sql dump
+dump.sql
+
+# Custom buildout config
+custom.cfg
+
+# Access databases for migrations
+*.mdb
+
+# PIP
+pip-selfcheck.json

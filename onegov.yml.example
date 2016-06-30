@@ -13,6 +13,7 @@ applications:
         create: true
       always_compile_theme: false
       sql_query_report: false
+      profile: false
       mail_host: localhost
       mail_port: 1025
       mail_force_tls: false
@@ -21,6 +22,21 @@ applications:
       mail_sender: mail@onegovcloud.ch
       mail_use_directory: true
       mail_directory: './mails'
+      mapbox_token:
+
+  - path: /wahlen/*
+    application: onegov.election_day.ElectionDayApp
+    namespace: election_day
+    configuration:
+      dsn: postgres://user:password@localhost:5432/database
+      identity_secure: false
+      identity_secret: very-secret-key
+      csrf_secret: another-very-secret-key
+      always_compile_theme: false
+      filestorage: fs.osfs.OSFS
+      filestorage_options:
+        root_path: './file-storage'
+        create: true
 
 logging:
   formatters:

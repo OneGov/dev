@@ -9,7 +9,10 @@
                 "dist",
                 "eggs",
                 "*.egg-info",
-                "docs/_build"
+                "docs/_build",
+                "filestorage",
+                "bundles",
+                ".webassets-cache"
             ]
         }
     ]
