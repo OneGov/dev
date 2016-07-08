@@ -10,7 +10,8 @@
                 "eggs",
                 "*.egg-info",
                 "docs/_build",
-                "filestorage",
+                "file-storage",
+                "depot-storage",
                 "bundles",
                 ".webassets-cache"
             ]
