@@ -11,6 +11,8 @@ applications:
       filestorage_options:
         root_path: './file-storage'
         create: true
+      depot_backend: 'depot.io.local.LocalFileStorage'
+      depot_storage_path: './depot-storage'
       always_compile_theme: false
       sql_query_report: false
       profile: false
