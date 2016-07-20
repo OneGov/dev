@@ -19,3 +19,6 @@ linters:
 
   QualifyingElement:
     enabled: false
+
+  ImportantRule:
+    enabled: false
