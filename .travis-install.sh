@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-pip install tox==1.9.2
+pip install tox
 
 if [ "$ES_URL" != 'no' ]; then
     mkdir /tmp/elasticsearch
