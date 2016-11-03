@@ -79,6 +79,7 @@ distribute-*.tar.gz
 
 # IPython notebooks
 notebooks/
+.ipynb_checkpoints
 
 # Default mail directory
 mails/
