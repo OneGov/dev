@@ -171,8 +171,8 @@ class Experiment(object):
         bookings = []
 
         for attendee in attendees:
-            chosen = random.sample(
-                occasions, weighted_random_choice(distribution))
+            number_of_choices = weighted_random_choice(distribution)
+            chosen = random.sample(occasions, number_of_choices)
 
             for ix, occasion in enumerate(chosen):
                 bookings.append(
@@ -269,6 +269,25 @@ class Experiment(object):
 
         scores = self.global_happiness_scores
         subplot.hist(scores, 10, color='#006fba', alpha=0.8)
+
+        return plt.plot()
+
+    @property
+    def course_bookings_graph(self):
+
+        # necessary for this code to run directly in the buildout,
+        # not just in the jupyter notebook alone
+        import matplotlib.pyplot as plt
+
+        plt.ylabel('Number of Bookings')
+        plt.xlabel('Course Index')
+
+        scores = [
+            len(o.bookings) for o in
+            self.query(Occasion).options(joinedload(Occasion.bookings))
+        ]
+
+        plt.bar(list(range(len(scores))), sorted(scores))
 
         return plt.plot()
 
@@ -503,22 +522,13 @@ class Experiment(object):
 if __name__ == '__main__':
     experiment = Experiment('postgresql://dev:dev@localhost:15432/onegov')
     experiment.create_fixtures(
-        choices=20,
+        choices=10,
         overlapping_chance=0.1,
-        attendee_count=100,
+        attendee_count=1,
         distribution=[
-            (0, 0.1),  # 10% have no choice
-            (1, 0.1),  # 10% have a single choice
-            (2, 0.1),  # 10% have two choices
-            (3, 0.2),  # 20% have three choices
-            (4, 0.2),  # 50% have four choices
-            (5, 0.1),  # 10% have five choices
-            (6, 0.1),  # 10% have six choices
-            (7, 0.1),  # 10% have seven choices
+            (1, 1.0),  # (number of choices, chance)
         ]
     )
-
-    experiment.greedy_matching_until_operable()
 
     print("Happiness: {:.2f}%".format(experiment.global_happiness * 100))
     print("Courses: {:.2f}%".format(experiment.operable_courses * 100))
