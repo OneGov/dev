@@ -13,7 +13,7 @@ from onegov.core.orm.session_manager import SessionManager
 from onegov.user import UserCollection
 from sedate import overlaps
 from statistics import mean, stdev
-from sqlalchemy import func
+from sqlalchemy import func, desc
 from sqlalchemy.orm import joinedload
 from uuid import uuid4
 
@@ -309,6 +309,7 @@ class Experiment(object):
 
     def reset_bookings(self):
         q = self.session.query(Booking)
+        q = q.filter(Booking.state != 'unconfirmed')
         q.update({Booking.state: 'unconfirmed'}, 'fetch')
 
         transaction.commit()
@@ -317,67 +318,72 @@ class Experiment(object):
         self.reset_bookings()
 
         q = self.session.query(Booking)
-        q = q.order_by(Booking.occasion_id, Booking.priority)
+        q = q.order_by(Booking.occasion_id, desc(Booking.priority))
         q = q.options(joinedload(Booking.occasion))
 
-        def grouped_by_state(state):
-            return {
-                occasion: set(bookings)
-                for occasion, bookings in groupby(
-                    q.filter(Booking.state == state),
-                    key=lambda booking: booking.occasion
-                )
-            }
+        # read as list first, as the order matters for the grouping
+        unconfirmed = list(q.filter(Booking.state == 'unconfirmed'))
 
-        unconfirmed = grouped_by_state('unconfirmed')
-        confirmed = grouped_by_state('confirmed')
-        cancelled = grouped_by_state('cancelled')
+        by_occasion = [
+            (occasion, set(candidates))
+            for occasion, candidates
+            in groupby(unconfirmed, key=lambda booking: booking.occasion)
+        ]
 
-        occasions = self.session.query(Occasion).all()
+        # the order no longer matters
+        unconfirmed = set(unconfirmed)
+        confirmed = set(q.filter(Booking.state == 'confirmed'))
+        cancelled = set(q.filter(Booking.state == 'cancelled'))
 
-        for occasion in occasions:
-            for group in (unconfirmed, confirmed, cancelled):
-                if occasion not in group:
-                    group[occasion] = set()
+        for occasion, candidates in by_occasion:
 
-        for occasion in occasions:
-            candidates = set(unconfirmed.get(occasion) or tuple())
-
-            picks = set()
-            collateral = set()
+            # remove the already cancelled or confirmed (this loop operates
+            # on a separate copy of the data)
+            candidates -= cancelled
+            candidates -= confirmed
 
             # if there are not enough bookings for an occasion we must exit
             if len(candidates) < occasion.spots.lower:
                 continue
 
+            picks = set()
+            collateral = set()
+
             while candidates and len(picks) < occasion.spots.lower:
+
                 # pick the next best spot
                 pick = candidates.pop()
                 picks.add(pick)
 
-                # find the bookings made impossible by this pick
-                for o in unconfirmed:
-                    collateral = collateral | set(
-                        b for b in unconfirmed[o]
-                        if b.attendee_id == pick.attendee_id and
-                        b not in picks and
-                        overlaps(
-                            b.occasion.start, b.occasion.end,
-                            pick.occasion.start, pick.occasion.end
-                        )
+                # keep track of all bookings that would be made impossible
+                # if this occasion was able to fill its quota
+                collateral |= set(
+                    b for b in unconfirmed
+                    if b.attendee_id == pick.attendee_id and
+                    b not in picks and
+                    overlaps(
+                        b.occasion.start, b.occasion.end,
+                        pick.occasion.start, pick.occasion.end
                     )
+                )
 
-                candidates = candidates - collateral
+                # remove affected bookings from possible candidates
+                candidates -= collateral
 
+            # if the quota has been filled, move the bookings around
             if len(picks) >= occasion.spots.lower:
-                unconfirmed[occasion] -= picks
-                confirmed[occasion] |= picks
-                cancelled[occasion] |= collateral
-                cancelled[occasion] -= confirmed[occasion]
+
+                # confirm picks
+                confirmed |= picks
+                unconfirmed -= picks
+
+                # cancel affected bookings
+                cancelled |= collateral
+                unconfirmed -= collateral
 
         # write the changes to the database
-        def update_states(group, state):
-            ids = set(o.id for s in group.values() for o in s)
+        def update_states(bookings, state):
+            ids = set(b.id for b in bookings)
 
             if not ids:
                 return
@@ -392,19 +398,46 @@ class Experiment(object):
 
         transaction.commit()
 
+        self.assert_correctness()
+
+    def assert_correctness(self):
+        # make sure no confirmed bookings by attendee overlap
+        q = self.query(Booking)
+        q = q.filter(Booking.state == 'confirmed')
+        q = q.options(joinedload(Booking.occasion))
+        q = q.order_by(Booking.attendee_id)
+
+        for attendee_id, bookings in groupby(q, key=lambda b: b.attendee_id):
+            bookings = sorted(list(bookings), key=lambda b: b.occasion.start)
+
+            for previous, current in pairwise(bookings):
+                if previous and current:
+                    assert previous.occasion.end <= current.occasion.start
+
+        # make sure no course has bookings that amount to less than the
+        # required amount
+        q = self.query(Occasion)
+        q = q.options(joinedload(Occasion.bookings))
+
+        for occasion in q:
+            if not occasion.bookings:
+                continue
+
+            assert len(occasion.bookings) >= occasion.spots.lower
+
 
 if __name__ == '__main__':
     experiment = Experiment('postgresql://dev:dev@localhost:15432/onegov')
     experiment.create_fixtures(
-        choices=10,
+        choices=20,
         overlapping_chance=0.1,
-        attendee_count=10,
+        attendee_count=100,
         distribution=[
             (0, 0.1),  # 10% have no choice
             (1, 0.1),  # 10% have a single choice
             (2, 0.1),  # 10% have two choices
             (3, 0.2),  # 20% have three choices
-            (4, 0.2),  # 20% have four choices
+            (4, 0.2),  # 50% have four choices
             (5, 0.1),  # 10% have five choices
             (6, 0.1),  # 10% have six choices
             (7, 0.1),  # 10% have seven choices
@@ -412,7 +445,6 @@ if __name__ == '__main__':
     )
 
     experiment.greedy_matching_until_operable()
-    print("Global happiness: {:.2f}%".format(
-        experiment.global_happiness * 100))
-    print("Operable courses: {:.2f}%".format(
-        experiment.operable_courses * 100))
+
+    print("Happiness: {:.2f}%".format(experiment.global_happiness * 100))
+    print("Courses: {:.2f}%".format(experiment.operable_courses * 100))
