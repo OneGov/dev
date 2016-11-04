@@ -367,8 +367,13 @@ class Experiment(object):
         candidates.remove(pick)
         return pick
 
-    def greedy_matching_until_operable(self, pick_function, safety_margin=0):
-        self.reset_bookings()
+    def greedy_matching_until_operable(self, pick_function, safety_margin=0,
+                                       matching_round=0):
+
+        if matching_round == 0:
+            self.reset_bookings()
+
+        random.seed(matching_round)
 
         q = self.session.query(Booking)
 
@@ -385,6 +390,8 @@ class Experiment(object):
             for occasion, candidates
             in groupby(unconfirmed, key=lambda booking: booking.occasion)
         ]
+
+        random.shuffle(by_occasion)
 
         # the order no longer matters
         unconfirmed = set(unconfirmed)
