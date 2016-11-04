@@ -12,8 +12,9 @@ from onegov.core.orm import Base
 from onegov.core.orm.session_manager import SessionManager
 from onegov.user import UserCollection
 from sedate import overlaps
+from boltons.setutils import IndexedSet
 from statistics import mean, stdev
-from sqlalchemy import func, desc
+from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from uuid import uuid4
 
@@ -314,18 +315,73 @@ class Experiment(object):
 
         transaction.commit()
 
-    def greedy_matching_until_operable(self):
+    def pick_favorite(self, candidates, *args):
+        """ Will simply pick the favorites first in the entered order. """
+        return candidates.pop()
+
+    def pick_random(self, candidates, *args):
+        """ Will pick completely at random. """
+        return candidates.pop(random.randint(0, len(candidates) - 1))
+
+    def pick_random_but_favorites_first(self, candidates, *args):
+        """ Picks at random, first only considering favorites, then considering
+        everyone. """
+        excited = [c for c in candidates if c.priority]
+
+        if excited:
+            pick = random.choice(excited)
+        else:
+            pick = random.choice([c for c in candidates if not c.priority])
+
+        candidates.remove(pick)
+        return pick
+
+    def pick_least_impact_favorites_first(self, candidates, unconfirmed):
+        """ Picks the favorite with the least impact amongst all unconfirmed
+        bookings. That is the booking which will cause the least other
+        bookings to be cancelled.
+
+        """
+
+        # yields the number of bookings affected by the given one
+        def impact(candidate):
+            impacted = 0
+
+            for b in unconfirmed:
+                if b.attendee_id == candidate.attendee_id:
+                    is_impacted = overlaps(
+                        b.occasion.start, b.occasion.end,
+                        candidate.occasion.start, candidate.occasion.end
+                    )
+                    impacted += is_impacted and 1 or 0
+
+            return impacted
+
+        excited = [c for c in candidates if c.priority]
+
+        if excited:
+            pick = min(excited, key=impact)
+        else:
+            pick = min([c for c in candidates if not c.priority], key=impact)
+
+        candidates.remove(pick)
+        return pick
+
+    def greedy_matching_until_operable(self, pick_function, safety_margin=0):
         self.reset_bookings()
 
         q = self.session.query(Booking)
-        q = q.order_by(Booking.occasion_id, desc(Booking.priority))
+
+        # higher priority bookings land at the end, since we treat the
+        # candidates as a queue -> they end up at the front of the queue
+        q = q.order_by(Booking.occasion_id, Booking.priority)
         q = q.options(joinedload(Booking.occasion))
 
         # read as list first, as the order matters for the grouping
         unconfirmed = list(q.filter(Booking.state == 'unconfirmed'))
 
         by_occasion = [
-            (occasion, set(candidates))
+            (occasion, IndexedSet(candidates))
             for occasion, candidates
             in groupby(unconfirmed, key=lambda booking: booking.occasion)
         ]
@@ -349,10 +405,12 @@ class Experiment(object):
             picks = set()
             collateral = set()
 
-            while candidates and len(picks) < occasion.spots.lower:
+            required_picks = occasion.spots.lower + safety_margin
+
+            while candidates and len(picks) < required_picks:
 
                 # pick the next best spot
-                pick = candidates.pop()
+                pick = pick_function(candidates, unconfirmed)
                 picks.add(pick)
 
                 # keep track of all bookings that would be made impossible
@@ -371,7 +429,7 @@ class Experiment(object):
                 candidates -= collateral
 
             # if the quota has been filled, move the bookings around
-            if len(picks) >= occasion.spots.lower:
+            if len(picks) >= required_picks:
 
                 # confirm picks
                 confirmed |= picks
@@ -412,7 +470,10 @@ class Experiment(object):
 
             for previous, current in pairwise(bookings):
                 if previous and current:
-                    assert previous.occasion.end <= current.occasion.start
+                    assert not overlaps(
+                        previous.occasion.start, previous.occasion.end,
+                        current.occasion.start, current.occasion.end
+                    )
 
         # make sure no course has bookings that amount to less than the
         # required amount
@@ -423,7 +484,13 @@ class Experiment(object):
             if not occasion.bookings:
                 continue
 
-            assert len(occasion.bookings) >= occasion.spots.lower
+            # we don't want to confirm spots which do not lead to a filled
+            # out occasion at this point - though we might have to revisit this
+            confirmed = [
+                b for b in occasion.bookings if b.state == 'confirmed']
+
+            if confirmed:
+                assert len(confirmed) >= occasion.spots.lower
 
 
 if __name__ == '__main__':
