@@ -16,6 +16,7 @@ from boltons.setutils import IndexedSet
 from statistics import mean, stdev
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
+from sortedcontainers import SortedSet
 from uuid import uuid4
 
 
@@ -433,7 +434,16 @@ class Experiment(object):
 
             required_picks = occasion.spots.lower + safety_margin
 
+            existing_picks = sum(
+                1 for b in occasion.bookings if b.state == 'confirmed')
+
+            if existing_picks >= (occasion.spots.upper - 1):
+                continue
+
             while candidates and len(picks) < required_picks:
+
+                if len(picks) + existing_picks == occasion.spots.upper - 1:
+                    break
 
                 # pick the next best spot
                 pick = pick_function(candidates, unconfirmed)
@@ -484,6 +494,175 @@ class Experiment(object):
 
         self.assert_correctness()
 
+    def deferred_acceptance(self):
+        self.reset_bookings()
+
+        class AttendeePreferences(object):
+            def __init__(self, attendee):
+                self.attendee = attendee
+                self.wishlist = SortedSet([
+                    b for b in attendee.bookings
+                    if b.state == 'unconfirmed'
+                ], key=lambda b: b.priority * -1)
+                self.cancelled = set()
+                self.confirmed = set()
+
+            def __hash__(self):
+                return hash(self.attendee)
+
+            def __bool__(self):
+                return len(self.wishlist) > 0
+
+            def confirm(self, booking):
+                self.cancelled |= set(
+                    b for b in self.wishlist
+                    if hash(b) != hash(booking) and
+                    overlaps(
+                        booking.occasion.start, booking.occasion.end,
+                        b.occasion.start, b.occasion.end
+                    )
+                )
+
+                self.wishlist.remove(booking)
+                self.confirmed.add(booking)
+
+            def unconfirm(self, booking):
+                self.wishlist.add(booking)
+                self.confirmed.remove(booking)
+
+                for x in self.cancelled:
+                    for y in self.cancelled:
+                        if hash(x) == hash(y):
+                            break
+                        if overlaps(x.occasion.start, x.occasion.end,
+                                    y.occasion.start, y.occasion.end):
+                            break
+                    else:
+                        self.wishlist.add(y)
+
+                self.cancelled -= self.wishlist
+
+            def pop(self):
+                return self.wishlist.pop(0)
+
+        class OccasionPreferences(object):
+            def __init__(self, occasion):
+                self.occasion = occasion
+                self.bookings = set(
+                    b for b in occasion.bookings
+                    if b.state == 'confirmed'
+                )
+                self.attendees = {}
+
+            def __hash__(self):
+                return hash(self.occasion)
+
+            @property
+            def operable(self):
+                return len(self.bookings) >= self.occasion.spots.lower
+
+            @property
+            def full(self):
+                return len(self.bookings) == (self.occasion.spots.upper - 1)
+
+            def score(self, booking):
+                return booking.priority
+
+            def match(self, attendee, booking):
+                if not self.full:
+                    self.attendees[booking] = attendee
+                    self.bookings.add(booking)
+                    attendee.confirm(booking)
+                    return True
+
+                for b in self.bookings:
+                    if self.score(b) < self.score(booking):
+                        attendee.confirm(booking)
+                        self.attendees[b].unconfirm(b)
+                        self.bookings.remove(b)
+                        self.bookings.add(booking)
+                        return True
+
+                return False
+
+        q = self.session.query(Attendee)
+        q = q.options(joinedload(Attendee.bookings))
+        unmatched = set(AttendeePreferences(a) for a in q)
+
+        q = self.session.query(Booking)
+        q = q.options(joinedload(Booking.occasion))
+
+        all_bookings = q.all()
+
+        preferences = {
+            o: OccasionPreferences(o)
+            for o in set(b.occasion for b in all_bookings)
+        }
+        occasions = {b: preferences[b.occasion] for b in all_bookings}
+
+        while next((u for u in unmatched if u), None):
+
+            if all(p.full for p in preferences.values()):
+                break
+
+            candidates = [u for u in unmatched if u]
+            random.shuffle(candidates)
+
+            matches = 0
+
+            while candidates:
+                candidate = candidates.pop()
+
+                for booking in candidate.wishlist:
+                    if occasions[booking].match(candidate, booking):
+                        matches += 1
+                        break
+
+            if not matches:
+                break
+
+        # write the changes to the database
+        def update_states(bookings, state):
+            ids = set(b.id for b in bookings)
+
+            if not ids:
+                return
+
+            b = self.session.query(Booking)
+            b = b.filter(Booking.id.in_(ids))
+            b.update({Booking.state: state}, 'fetch')
+
+        unconfirmed = set(b for a in unmatched for b in a.wishlist)
+        confirmed = set(b for a in unmatched for b in a.confirmed)
+        cancelled = set(b for a in unmatched for b in a.cancelled)
+
+        # to be comparable to the greedy algorithm we need to cancel
+        # occasions which can't be fulfilled
+        for preference in preferences.values():
+            if not preference.operable:
+                unconfirmed |= preference.bookings
+                confirmed -= preference.bookings
+
+        for ca in cancelled:
+            for co in confirmed:
+                if hash(ca) == hash(co):
+                    break
+                if overlaps(ca.occasion.start, ca.occasion.end,
+                            co.occasion.start, co.occasion.end):
+                    break
+            else:
+                unconfirmed.add(ca)
+
+        cancelled -= unconfirmed
+
+        update_states(unconfirmed, 'unconfirmed')
+        update_states(confirmed, 'confirmed')
+        update_states(cancelled, 'cancelled')
+
+        transaction.commit()
+
+        self.assert_correctness()
+
     def assert_correctness(self):
         # make sure no confirmed bookings by attendee overlap
         q = self.query(Booking)
@@ -501,8 +680,7 @@ class Experiment(object):
                         current.occasion.start, current.occasion.end
                     )
 
-        # make sure no course has bookings that amount to less than the
-        # required amount
+        # make sure no course is overbooked
         q = self.query(Occasion)
         q = q.options(joinedload(Occasion.bookings))
 
@@ -511,24 +689,26 @@ class Experiment(object):
                 continue
 
             # we don't want to confirm spots which do not lead to a filled
-            # out occasion at this point - though we might have to revisit this
+            # out occasion at this point - though we might have to revisit
             confirmed = [
                 b for b in occasion.bookings if b.state == 'confirmed']
 
             if confirmed:
-                assert len(confirmed) >= occasion.spots.lower
+                assert len(confirmed) < occasion.spots.upper
 
 
 if __name__ == '__main__':
     experiment = Experiment('postgresql://dev:dev@localhost:15432/onegov')
     experiment.create_fixtures(
-        choices=10,
-        overlapping_chance=0.1,
-        attendee_count=1,
-        distribution=[
-            (1, 1.0),  # (number of choices, chance)
+        choices=5,
+        overlapping_chance=0.5,
+        attendee_count=100,
+        distribution=[  # (number of choices, chance)
+            (1, 1),
         ]
     )
+
+    experiment.deferred_acceptance()
 
     print("Happiness: {:.2f}%".format(experiment.global_happiness * 100))
     print("Courses: {:.2f}%".format(experiment.operable_courses * 100))
