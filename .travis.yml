@@ -6,6 +6,9 @@ python: "3.4"
 env:
     - TOXENV=py34 ES_BINARY=/tmp/elasticsearch/bin/elasticsearch ES_URL=https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-2.2.0.tar.gz
 
+addons:
+    postgresql: "9.3"
+
 install: ./.travis-install.sh
 
 script: bin/py.test src/onegov.town
