@@ -1,5 +1,5 @@
-# runs the buildout and tests onegov.town, because that's the package that
-# requires all the dependencies
+# runs the buildout and tests onegov.org, because that's the package with
+# the most dependencies and number of tests
 language: python
 python: "3.4"
 
@@ -11,4 +11,4 @@ addons:
 
 install: ./.travis-install.sh
 
-script: bin/py.test src/onegov.town
+script: bin/py.test src/onegov.org
