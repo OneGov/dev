@@ -8,6 +8,7 @@ from onegov.activity import Attendee, AttendeeCollection
 from onegov.activity import Booking, BookingCollection
 from onegov.activity import Occasion, OccasionCollection
 from onegov.activity import PeriodCollection
+from onegov.activity.matching import match_bookings_with_occasions_from_db
 from onegov.core.orm import Base
 from onegov.core.orm.session_manager import SessionManager
 from onegov.user import UserCollection
@@ -230,7 +231,7 @@ class Experiment(object):
 
         for booking in bookings:
             bits.extend(
-                booking.state == 'confirmed' and 1 or 0
+                booking.state == 'accepted' and 1 or 0
                 for _ in range(booking.priority + 1)
             )
 
@@ -294,13 +295,13 @@ class Experiment(object):
 
     @property
     def operable_courses(self):
-        unconfirmed = self.session.query(Booking)\
+        accepted = self.session.query(Booking)\
             .with_entities(func.count(Booking.id).label('count'))\
             .filter(Booking.occasion_id == Occasion.id)\
-            .filter(Booking.state == 'confirmed')\
+            .filter(Booking.state == 'accepted')\
             .subquery().lateral()
 
-        o = self.session.query(Occasion, unconfirmed.c.count)
+        o = self.session.query(Occasion, accepted.c.count)
 
         bits = []
 
@@ -330,8 +331,8 @@ class Experiment(object):
 
     def reset_bookings(self):
         q = self.session.query(Booking)
-        q = q.filter(Booking.state != 'unconfirmed')
-        q.update({Booking.state: 'unconfirmed'}, 'fetch')
+        q = q.filter(Booking.state != 'open')
+        q.update({Booking.state: 'open'}, 'fetch')
 
         transaction.commit()
 
@@ -356,10 +357,10 @@ class Experiment(object):
         candidates.remove(pick)
         return pick
 
-    def pick_least_impact_favorites_first(self, candidates, unconfirmed):
-        """ Picks the favorite with the least impact amongst all unconfirmed
+    def pick_least_impact_favorites_first(self, candidates, open):
+        """ Picks the favorite with the least impact amongst all open
         bookings. That is the booking which will cause the least other
-        bookings to be cancelled.
+        bookings to be blocked.
 
         """
 
@@ -367,7 +368,7 @@ class Experiment(object):
         def impact(candidate):
             impacted = 0
 
-            for b in unconfirmed:
+            for b in open:
                 if b.attendee_id == candidate.attendee_id:
                     is_impacted = overlaps(
                         b.occasion.start, b.occasion.end,
@@ -403,27 +404,27 @@ class Experiment(object):
         q = q.options(joinedload(Booking.occasion))
 
         # read as list first, as the order matters for the grouping
-        unconfirmed = list(q.filter(Booking.state == 'unconfirmed'))
+        open = list(q.filter(Booking.state == 'open'))
 
         by_occasion = [
             (occasion, IndexedSet(candidates))
             for occasion, candidates
-            in groupby(unconfirmed, key=lambda booking: booking.occasion)
+            in groupby(open, key=lambda booking: booking.occasion)
         ]
 
         random.shuffle(by_occasion)
 
         # the order no longer matters
-        unconfirmed = set(unconfirmed)
-        confirmed = set(q.filter(Booking.state == 'confirmed'))
-        cancelled = set(q.filter(Booking.state == 'cancelled'))
+        open = set(open)
+        accepted = set(q.filter(Booking.state == 'accepted'))
+        blocked = set(q.filter(Booking.state == 'blocked'))
 
         for occasion, candidates in by_occasion:
 
-            # remove the already cancelled or confirmed (this loop operates
+            # remove the already blocked or accepted (this loop operates
             # on a separate copy of the data)
-            candidates -= cancelled
-            candidates -= confirmed
+            candidates -= blocked
+            candidates -= accepted
 
             # if there are not enough bookings for an occasion we must exit
             if len(candidates) < occasion.spots.lower:
@@ -435,7 +436,7 @@ class Experiment(object):
             required_picks = occasion.spots.lower + safety_margin
 
             existing_picks = sum(
-                1 for b in occasion.bookings if b.state == 'confirmed')
+                1 for b in occasion.bookings if b.state == 'accepted')
 
             if existing_picks >= (occasion.spots.upper - 1):
                 continue
@@ -446,13 +447,13 @@ class Experiment(object):
                     break
 
                 # pick the next best spot
-                pick = pick_function(candidates, unconfirmed)
+                pick = pick_function(candidates, open)
                 picks.add(pick)
 
                 # keep track of all bookings that would be made impossible
                 # if this occasion was able to fill its quota
                 collateral |= set(
-                    b for b in unconfirmed
+                    b for b in open
                     if b.attendee_id == pick.attendee_id and
                     b not in picks and
                     overlaps(
@@ -464,16 +465,13 @@ class Experiment(object):
                 # remove affected bookings from possible candidates
                 candidates -= collateral
 
-            # if the quota has been filled, move the bookings around
-            if len(picks) >= required_picks:
+            # confirm picks
+            accepted |= picks
+            open -= picks
 
-                # confirm picks
-                confirmed |= picks
-                unconfirmed -= picks
-
-                # cancel affected bookings
-                cancelled |= collateral
-                unconfirmed -= collateral
+            # cancel affected bookings
+            blocked |= collateral
+            open -= collateral
 
         # write the changes to the database
         def update_states(bookings, state):
@@ -486,12 +484,20 @@ class Experiment(object):
             b = b.filter(Booking.id.in_(ids))
             b.update({Booking.state: state}, 'fetch')
 
-        update_states(unconfirmed, 'unconfirmed')
-        update_states(confirmed, 'confirmed')
-        update_states(cancelled, 'cancelled')
+        update_states(open, 'open')
+        update_states(accepted, 'accepted')
+        update_states(blocked, 'blocked')
 
         transaction.commit()
 
+        self.assert_correctness()
+
+    def builtin_deferred_acceptance(self):
+        self.reset_bookings()
+        match_bookings_with_occasions_from_db(
+            self.session, PeriodCollection(self.session).query().first().id
+        )
+        transaction.commit()
         self.assert_correctness()
 
     def deferred_acceptance(self):
@@ -502,10 +508,10 @@ class Experiment(object):
                 self.attendee = attendee
                 self.wishlist = SortedSet([
                     b for b in attendee.bookings
-                    if b.state == 'unconfirmed'
+                    if b.state == 'open'
                 ], key=lambda b: b.priority * -1)
-                self.cancelled = set()
-                self.confirmed = set()
+                self.blocked = set()
+                self.accepted = set()
 
             def __hash__(self):
                 return hash(self.attendee)
@@ -514,7 +520,7 @@ class Experiment(object):
                 return len(self.wishlist) > 0
 
             def confirm(self, booking):
-                self.cancelled |= set(
+                self.blocked |= set(
                     b for b in self.wishlist
                     if hash(b) != hash(booking) and
                     overlaps(
@@ -524,14 +530,14 @@ class Experiment(object):
                 )
 
                 self.wishlist.remove(booking)
-                self.confirmed.add(booking)
+                self.accepted.add(booking)
 
             def unconfirm(self, booking):
                 self.wishlist.add(booking)
-                self.confirmed.remove(booking)
+                self.accepted.remove(booking)
 
-                for x in self.cancelled:
-                    for y in self.cancelled:
+                for x in self.blocked:
+                    for y in self.blocked:
                         if hash(x) == hash(y):
                             break
                         if overlaps(x.occasion.start, x.occasion.end,
@@ -540,7 +546,7 @@ class Experiment(object):
                     else:
                         self.wishlist.add(y)
 
-                self.cancelled -= self.wishlist
+                self.blocked -= self.wishlist
 
             def pop(self):
                 return self.wishlist.pop(0)
@@ -550,7 +556,7 @@ class Experiment(object):
                 self.occasion = occasion
                 self.bookings = set(
                     b for b in occasion.bookings
-                    if b.state == 'confirmed'
+                    if b.state == 'accepted'
                 )
                 self.attendees = {}
 
@@ -632,41 +638,22 @@ class Experiment(object):
             b = b.filter(Booking.id.in_(ids))
             b.update({Booking.state: state}, 'fetch')
 
-        unconfirmed = set(b for a in unmatched for b in a.wishlist)
-        confirmed = set(b for a in unmatched for b in a.confirmed)
-        cancelled = set(b for a in unmatched for b in a.cancelled)
+        open = set(b for a in unmatched for b in a.wishlist)
+        accepted = set(b for a in unmatched for b in a.accepted)
+        blocked = set(b for a in unmatched for b in a.blocked)
 
-        # to be comparable to the greedy algorithm we need to cancel
-        # occasions which can't be fulfilled
-        for preference in preferences.values():
-            if not preference.operable:
-                unconfirmed |= preference.bookings
-                confirmed -= preference.bookings
-
-        for ca in cancelled:
-            for co in confirmed:
-                if hash(ca) == hash(co):
-                    break
-                if overlaps(ca.occasion.start, ca.occasion.end,
-                            co.occasion.start, co.occasion.end):
-                    break
-            else:
-                unconfirmed.add(ca)
-
-        cancelled -= unconfirmed
-
-        update_states(unconfirmed, 'unconfirmed')
-        update_states(confirmed, 'confirmed')
-        update_states(cancelled, 'cancelled')
+        update_states(open, 'open')
+        update_states(accepted, 'accepted')
+        update_states(blocked, 'blocked')
 
         transaction.commit()
 
         self.assert_correctness()
 
     def assert_correctness(self):
-        # make sure no confirmed bookings by attendee overlap
+        # make sure no accepted bookings by attendee overlap
         q = self.query(Booking)
-        q = q.filter(Booking.state == 'confirmed')
+        q = q.filter(Booking.state == 'accepted')
         q = q.options(joinedload(Booking.occasion))
         q = q.order_by(Booking.attendee_id)
 
@@ -690,11 +677,11 @@ class Experiment(object):
 
             # we don't want to confirm spots which do not lead to a filled
             # out occasion at this point - though we might have to revisit
-            confirmed = [
-                b for b in occasion.bookings if b.state == 'confirmed']
+            accepted = [
+                b for b in occasion.bookings if b.state == 'accepted']
 
-            if confirmed:
-                assert len(confirmed) < occasion.spots.upper
+            if accepted:
+                assert len(accepted) < occasion.spots.upper
 
 
 if __name__ == '__main__':
