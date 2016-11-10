@@ -492,10 +492,11 @@ class Experiment(object):
 
         self.assert_correctness()
 
-    def builtin_deferred_acceptance(self):
+    def builtin_deferred_acceptance(self, stability_check):
         self.reset_bookings()
         match_bookings_with_occasions_from_db(
-            self.session, PeriodCollection(self.session).query().first().id
+            self.session, PeriodCollection(self.session).query().first().id,
+            stability_check=stability_check
         )
         transaction.commit()
         self.assert_correctness()
