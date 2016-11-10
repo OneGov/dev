@@ -39,6 +39,7 @@ applications:
       filestorage_options:
         root_path: './file-storage'
         create: true
+      sms_directory: './sms'
 
 logging:
   formatters:

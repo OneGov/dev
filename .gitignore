@@ -83,6 +83,9 @@ notebooks/
 # Default mail directory
 mails/
 
+# Default sms directory
+sms/
+
 # Default sql dump
 dump.sql
 
