@@ -8,7 +8,7 @@ from onegov.activity import Attendee, AttendeeCollection
 from onegov.activity import Booking, BookingCollection
 from onegov.activity import Occasion, OccasionCollection
 from onegov.activity import PeriodCollection
-from onegov.activity.matching import match_bookings_with_occasions_from_db
+from onegov.activity.matching import deferred_acceptance_from_database
 from onegov.core.orm import Base
 from onegov.core.orm.session_manager import SessionManager
 from onegov.user import UserCollection
@@ -492,11 +492,14 @@ class Experiment(object):
 
         self.assert_correctness()
 
-    def builtin_deferred_acceptance(self, stability_check):
+    def builtin_deferred_acceptance(self,
+                                    stability_check=False,
+                                    validity_check=True):
         self.reset_bookings()
-        match_bookings_with_occasions_from_db(
+        deferred_acceptance_from_database(
             self.session, PeriodCollection(self.session).query().first().id,
-            stability_check=stability_check
+            stability_check=stability_check,
+            validity_check=validity_check
         )
         transaction.commit()
         self.assert_correctness()
