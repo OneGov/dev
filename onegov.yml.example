@@ -14,6 +14,7 @@ applications:
       depot_backend: 'depot.io.local.LocalFileStorage'
       depot_storage_path: './depot-storage'
       always_compile_theme: false
+      allow_shift_f5_compile: false
       sql_query_report: false
       profile: false
       mail_host: localhost
@@ -35,6 +36,7 @@ applications:
       identity_secret: very-secret-key
       csrf_secret: another-very-secret-key
       always_compile_theme: false
+      allow_shift_f5_compile: false
       filestorage: fs.osfs.OSFS
       filestorage_options:
         root_path: './file-storage'
