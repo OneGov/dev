@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 pip install tox
+pip install --upgrade pip
+pip install --upgrade setuptools
 
 if [ "$ES_URL" != 'no' ]; then
     mkdir /tmp/elasticsearch
