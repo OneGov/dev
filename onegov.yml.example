@@ -42,6 +42,8 @@ applications:
         root_path: './file-storage'
         create: true
       sms_directory: './sms'
+      hipchat_room_id: '123456'
+      hipchat_token: abcdef
 
 logging:
   formatters:
