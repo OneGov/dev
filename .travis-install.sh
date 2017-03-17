@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-pip install tox
 pip install --upgrade pip
 pip install --upgrade setuptools
 
