@@ -98,3 +98,6 @@ custom.cfg
 
 # PIP
 pip-selfcheck.json
+
+# Custom scripts
+scripts/
