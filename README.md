@@ -30,6 +30,7 @@ Having done all that, run buildout:
     git clone https://github.com/onegov/dev onegov
     cd onegov
     virtualenv -p python3.4 --no-site-packages .
+    source bin/activate
     bin/python bootstrap.py
     bin/buildout
 
