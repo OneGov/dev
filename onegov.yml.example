@@ -32,6 +32,7 @@ applications:
     namespace: election_day
     configuration:
       dsn: postgres://user:password@localhost:5432/database
+      sentry_js: 'https://xxx@sentry.io/xxx'
       identity_secure: false
       identity_secret: very-secret-key
       csrf_secret: another-very-secret-key
