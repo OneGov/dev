@@ -101,3 +101,6 @@ pip-selfcheck.json
 
 # Custom scripts
 scripts/
+
+# pyenv
+.python-version
