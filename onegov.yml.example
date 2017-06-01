@@ -26,6 +26,10 @@ applications:
       mail_use_directory: true
       mail_directory: './mails'
       mapbox_token:
+      payment_provider_defaults:
+        stripe_connect:
+          client_id: foo
+          client_secret: bar
 
   - path: /wahlen/*
     application: onegov.election_day.ElectionDayApp
