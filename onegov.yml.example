@@ -30,6 +30,12 @@ applications:
         stripe_connect:
           client_id: foo
           client_secret: bar
+          # the gateway through which the redirects go
+          oauth_gateway: https://oauth.example.org
+          # the key needed to authenticate oneself with the gateway
+          oauth_gateway_auth: foobar
+          # the client-specific secret that is used to authenticate the 
+          oauth_gateway_secret: barfoo
 
   - path: /wahlen/*
     application: onegov.election_day.ElectionDayApp
