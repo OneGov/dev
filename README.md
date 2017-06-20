@@ -150,6 +150,11 @@ result in a timestamp profile file in the profiles folder for each request.
 You may then use the pstats profile browser as described here:
 http://stefaanlippens.net/python_profiling_with_pstats_interactive_mode
 
+Another possiblilty is to run `py.test` with `pytest-profiling`, which creates
+a nice SVG:
+
+    bin/py.test --profile --profile-svg src/onegov.core
+
 ## Internationalization (i18n)
 
 To use i18n, gettext must be installed. On most linux distros this is a given.
