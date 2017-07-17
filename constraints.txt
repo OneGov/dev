@@ -1,0 +1,3 @@
+# lingua 4.x trips on all kinds of things atm - there is some kind of
+# fundamental rewrite underway
+lingua==3.12

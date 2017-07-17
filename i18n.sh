@@ -2,19 +2,20 @@
 #
 # This script helps to add and update gettext translations to onegov modules.
 #
+MODULE="${1}"
+LANGUAGE="${2}"
+
+set -eu
 
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-MODULE="${1}"
-LANGUAGE="${2}"
 DOMAIN="${MODULE}"
 MODULE_PATH="${SCRIPTPATH}/src/${1}"
-
-SEARCH_PATH="${MODULE_PATH}/"$(echo "${MODULE}" | sed 's:\.:/:g')
+SEARCH_PATH="${MODULE_PATH}/${MODULE//.//}"
 LOCALE_PATH="${SEARCH_PATH}/locale"
 POT_FILE="${LOCALE_PATH}/${DOMAIN}.pot"
 
-POT_CREATE="${SCRIPTPATH}/bin/pot-create"
+POT_CREATE="${VIRTUAL_ENV}/bin/pot-create"
 
 if [ "${LANGUAGE}" != "" ]; then
     if echo "${LANGUAGE}" | egrep -v '^[a-z]{2}(_[A-Z]{2})?$' > /dev/null; then

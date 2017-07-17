@@ -2,16 +2,41 @@
 
 About OneGov: http://onegov.readthedocs.org/en/latest
 
+Requirements:
+
+    - Python 3.4+
+    - Postgres 9.3+
+    - POSIX platform (Linux, FreeBSD, macOS)
+
+Optional:
+    - Memcached 1.4+
+    - Elasticsearch 5.5+
+
 ## Install the Development Environment
 
-Requires Python 3.4+.
+To install, create a new virtual environment and run make:
+
+    virtualenv -p python3 .
+    make install
+
+## Update the Development Environment
+
+To get the latest updates and sources run:
+
+    make update
+
+To apply schema-changes to your database:
+
+    onegov-core upgrade
+
+## Fix Build Errors
 
 OneGov requires the following packages:
 
     - libxml2
     - libxslt
 
-Those should be downloaded and built automatically when you run buildout.
+Those should be downloaded and built automatically during installation.
 
 For that to work you need the python development files. On OSX those should
 be already installed if you installed Python 3 trough homebrew.
@@ -25,14 +50,23 @@ You also need to have the following header files installed:
 
     sudo apt-get install libcurl4-openssl-dev libffi-dev libjpeg-dev libpq-dev libxml2-dev libxslt1-dev zlib1g-dev
 
-Having done all that, run buildout:
+## Folder Structure
 
-    git clone https://github.com/onegov/dev onegov
-    cd onegov
-    virtualenv -p python3.4 --no-site-packages .
-    source bin/activate
-    bin/python bootstrap.py
-    bin/buildout
+The `depot-storage` folder contains the depot based storage.
+
+The `docs` folder contains onegov's documentation.
+
+The `eggs` folder contains links to all the sources used by the interpreter.
+This is very handy if you need to lookup source code from your editor.
+
+The `file-storage` folder contains the pyfilesystem based storage.
+
+The `experiments` folder contains Jupyter Notebook files.
+
+The `profiles` folder contains profiling output.
+
+The `src` folder contains the source code directly associated with onegov. This
+is where the magic happens ;)
 
 ## Setup Database
 
@@ -109,38 +143,36 @@ And point your browser to
 
 To run the tests of a specific module:
 
-    bin/py.test src/onegov.core
-    bin/py.test src/onegov.town
-    bin/py.test src/onegov.user
+    py.test src/onegov.core
+    py.test src/onegov.town
+    py.test src/onegov.user
 
 And so on.
 
-    bin/py.test src/onegov.*
+    py.test src/onegov.*
 
 Doesn't really work because pytest gets confused.
 
 To run a specific test:
 
-    bin/py.test src/onegov.core -k test_my_test
+    py.test src/onegov.core -k test_my_test
 
 To run tests in parallel (for faster execution):
 
-    bin/py.test src/onegov.core --tx='4*popen//python=bin/py' --dist=load
+    py.test src/onegov.core --tx='4*popen//python=bin/py' --dist=load
 
 ## Run Tests with Tox
 
 To run the tests with tox:
 
-    pip install tox
-    bash tox.sh onegov.core
-    bash tox.sh onegov.town
-    bash tox.sh onegov.user
+    tox -c src/onegov.core/tox.ini
+    tox -c src/onegov.org/tox.ini
 
 And so on.
 
 To run a specific test:
 
-    bash tox.sh onegov.core -- -k test_my_test
+    tox -c src/onegov.core -- -k test_my_test
 
 ## Profiling
 
@@ -153,7 +185,7 @@ http://stefaanlippens.net/python_profiling_with_pstats_interactive_mode
 Another possiblilty is to run `py.test` with `pytest-profiling`, which creates
 a nice SVG:
 
-    bin/py.test --profile --profile-svg src/onegov.core
+    py.test --profile --profile-svg src/onegov.core
 
 ## Internationalization (i18n)
 
@@ -170,6 +202,31 @@ On OSX it is recommended to install gettext with homebrew:
 
     bash i18n.sh onegov.town
 
+## Build Docs
+
+To build the docs:
+
+    cd docs
+    make html
+
+To completely rebuild the docs:
+
+    cd docs
+    make clean
+    make html
+
+## Show Uncommited Changes
+
+To show what changes (if any) are uncommited:
+
+    uncommitted . -nu
+
+## Run Jupyter Notebook
+
+Jupyter notebook comes preinstalled:
+
+    jupyter notebook
+
 ### SCSS Linting
 
 We use https://github.com/brigade/scss-lint to lint our scss files. The linter
@@ -183,8 +240,8 @@ configuration file per default.
 
 Other editors are not directly supported, so you are on your own.
 
-### Buildout Build Status
+### Build Status
 
-Travis tests if this buildout actually works. Current status:
+Travis tests if this setup actually works. Current status:
 
 [![Build Status](https://travis-ci.org/OneGov/dev.svg?branch=master)](https://travis-ci.org/OneGov/dev)

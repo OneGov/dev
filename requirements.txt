@@ -1,0 +1,79 @@
+# core libraries
+-e git+https://github.com/onegov/onegov.server#egg=onegov.server[test]
+-e git+https://github.com/onegov/onegov.core#egg=onegov.core[test]
+-e git+https://github.com/onegov/onegov.testing#egg=onegov.testing
+-e git+https://github.com/seantis/libres#egg=libres[test]
+-e git+https://github.com/seantis/sedate#egg=sedate[test]
+
+# models
+-e git+https://github.com/onegov/onegov.activity#egg=onegov.activity[test]
+-e git+https://github.com/onegov/onegov.ballot#egg=onegov.ballot[test]
+-e git+https://github.com/onegov/onegov.chat#egg=onegov.chat[test]
+-e git+https://github.com/onegov/onegov.event#egg=onegov.event[test]
+-e git+https://github.com/onegov/onegov.file#egg=onegov.file[test]
+-e git+https://github.com/onegov/onegov.form#egg=onegov.form[test]
+-e git+https://github.com/onegov/onegov.foundation#egg=onegov.foundation[test]
+-e git+https://github.com/onegov/onegov.gis#egg=onegov.gis[test]
+-e git+https://github.com/onegov/onegov.invoice#egg=onegov.invoice[test]
+-e git+https://github.com/onegov/onegov.newsletter#egg=onegov.newsletter[test]
+-e git+https://github.com/onegov/onegov.notice#egg=onegov.notice[test]
+-e git+https://github.com/onegov/onegov.page#egg=onegov.page[test]
+-e git+https://github.com/onegov/onegov.pay#egg=onegov.pay[test]
+-e git+https://github.com/onegov/onegov.people#egg=onegov.people[test]
+-e git+https://github.com/onegov/onegov.recipient#egg=onegov.recipient[test]
+-e git+https://github.com/onegov/onegov.reservation#egg=onegov.reservation[test]
+-e git+https://github.com/onegov/onegov.search#egg=onegov.search[test]
+-e git+https://github.com/onegov/onegov.shared#egg=onegov.shared[test]
+-e git+https://github.com/onegov/onegov.ticket#egg=onegov.ticket[test]
+-e git+https://github.com/onegov/onegov.user#egg=onegov.user[test]
+
+# applications
+-e git+https://github.com/onegov/onegov.election_day#egg=onegov.election_day[test]
+-e git+https://github.com/onegov/onegov.gazette#egg=onegov.gazette[test]
+-e git+https://github.com/onegov/onegov.org#egg=onegov.org[test]
+-e git+https://github.com/onegov/onegov.town#egg=onegov.town[test]
+-e git+https://github.com/onegov/onegov.feriennet#egg=onegov.feriennet[test]
+-e git+https://github.com/onegov/onegov.onboarding#egg=onegov.onboarding[test]
+-e git+https://github.com/onegov/onegov.applications#egg=onegov.applications
+
+# a replacement for buildout's omelette
+git+https://github.com/href/scrambler#egg=scrambler
+
+# used to update outdated packages
+pip-review
+
+# to show uncommitted changes
+uncommitted
+
+# to link all eggs into a single folder
+git+https://github.com/href/scrambler#egg=scrambler
+
+# profiling tools
+gprof2dot
+profilehooks
+
+# testing tools
+tox
+
+# build tools
+bumpversion
+punch.py
+
+# pytest plugins
+pytest-cov
+pytest-profiling
+pytest-xdist
+
+# jupyter notebooks
+jupyter
+matplotlib
+boltons
+sortedcontainers
+
+# sphinx
+sphinx
+alabaster
+
+# i18n
+lingua
+jinja2[i18n]
