@@ -181,6 +181,11 @@ add it to requirements.txt
 
 Version pins should be added to constraints.txt
 
+## Add Your Own Development Packages
+
+To add your own set of extra packages, create a new file called `extras.txt` and
+add them there (just like you would in a requirements.txt).
+
 ## Profiling
 
 To profile all requests, set `profile` in the onegov.yml to `true`. This will
