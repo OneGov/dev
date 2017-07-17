@@ -1,3 +1,6 @@
 # lingua 4.x trips on all kinds of things atm - there is some kind of
 # fundamental rewrite underway
 lingua==3.12
+
+# force pytest on travis to be up to date
+pytest>=3.0.6
