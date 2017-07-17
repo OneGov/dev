@@ -174,6 +174,13 @@ To run a specific test:
 
     tox -c src/onegov.core -- -k test_my_test
 
+## Add New Development Packages
+
+To add a package that should only be availalable in the development environment,
+add it to requirements.txt
+
+Version pins should be added to constraints.txt
+
 ## Profiling
 
 To profile all requests, set `profile` in the onegov.yml to `true`. This will
@@ -227,7 +234,7 @@ Jupyter notebook comes preinstalled:
 
     jupyter notebook
 
-### SCSS Linting
+## SCSS Linting
 
 We use https://github.com/brigade/scss-lint to lint our scss files. The linter
 configuration is found in the local directory (`./.scss-lint.yml`).
@@ -240,7 +247,7 @@ configuration file per default.
 
 Other editors are not directly supported, so you are on your own.
 
-### Build Status
+## Build Status
 
 Travis tests if this setup actually works. Current status:
 

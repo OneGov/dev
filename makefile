@@ -13,6 +13,7 @@ install: in_virtual_env
 
 	# ensure folder structure
 	mkdir -p ./depot-storage
+	mkdir -p ./file-storage
 	mkdir -p ./profiles
 
 	# gather eggs
