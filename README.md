@@ -92,7 +92,7 @@ To use OneGov Town you need to define a town first. Run the
 following command to define a new town (there is currently no way to do it
 through the web interface).
 
-    bin/onegov-town --select towns/govikon add Govikon
+    bin/onegov-town --select /towns/govikon add Govikon
 
 You also might want to define an admin to manage the site. Run the following
 command to define a user with admin role.
@@ -130,7 +130,7 @@ The logo points to a file in the same directory as the yml file.
 
 You also want to add a user, which you can do as follows:
 
-    bin/onegov-user --select '/election_day/zg' add admin admin@example.org
+    bin/onegov-user --select /election_day/zg add admin admin@example.org
 
 Having done that, start the onegov server as follows:
 
