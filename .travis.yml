@@ -11,4 +11,4 @@ addons:
 
 install: ./.travis.sh
 
-script: bin/py.test src/onegov.org
+script: py.test src/onegov.org
