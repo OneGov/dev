@@ -1,7 +1,7 @@
 # core libraries
 -e git+https://github.com/onegov/onegov.server#egg=onegov.server[test]
 -e git+https://github.com/onegov/onegov.core#egg=onegov.core[test]
--e git+https://github.com/onegov/onegov.testing#egg=onegov.testing
+-e git+https://github.com/onegov/onegov_testing#egg=onegov_testing
 -e git+https://github.com/seantis/libres#egg=libres[test]
 -e git+https://github.com/seantis/sedate#egg=sedate[test]
 
