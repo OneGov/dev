@@ -9,6 +9,7 @@
 -e git+https://github.com/onegov/onegov.activity#egg=onegov.activity[test]
 -e git+https://github.com/onegov/onegov.ballot#egg=onegov.ballot[test]
 -e git+https://github.com/onegov/onegov.chat#egg=onegov.chat[test]
+-e git+https://github.com/onegov/onegov.directory#egg=onegov.directory[test]
 -e git+https://github.com/onegov/onegov.event#egg=onegov.event[test]
 -e git+https://github.com/onegov/onegov.file#egg=onegov.file[test]
 -e git+https://github.com/onegov/onegov.form#egg=onegov.form[test]
