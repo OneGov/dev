@@ -3,11 +3,18 @@
 language: python
 python: "3.5"
 
+# required for google chrome
+dist: trusty
+
 env:
     - ES_VERSION=5.5.2
 
 addons:
     postgresql: "9.3"
+    apt:
+        packages:
+            - oracle-java8-set-default
+            - google-chrome-stable
 
 install: ./.travis.sh
 
