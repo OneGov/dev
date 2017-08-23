@@ -4,7 +4,7 @@ language: python
 python: "3.5"
 
 env:
-    - ES_VERSION=5.5.0
+    - ES_VERSION=5.5.2
 
 addons:
     postgresql: "9.3"
