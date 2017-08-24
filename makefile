@@ -36,3 +36,9 @@ in_virtual_env:
 	@if python -c 'import sys; hasattr(sys, "real_prefix") and sys.exit(1) or sys.exit(0)'; then \
 		echo "An active virtual environment is required"; exit 1; \
 		else true; fi
+
+test: in_virtual_env
+	find src -type d -depth 1 \
+		-not \( -path src/onegov-testing -prune \) \
+		-not \( -path src/onegov.applications -prune \) \
+		-print0 | xargs -n 1 -0 py.test

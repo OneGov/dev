@@ -149,10 +149,6 @@ To run the tests of a specific module:
 
 And so on.
 
-    py.test src/onegov.*
-
-Doesn't really work because pytest gets confused.
-
 To run a specific test:
 
     py.test src/onegov.core -k test_my_test
@@ -160,6 +156,14 @@ To run a specific test:
 To run tests in parallel (for faster execution):
 
     py.test src/onegov.core --tx='4*popen//python=bin/py' --dist=load
+
+To run all tests at once:
+
+    make test
+
+Note that the following *won't work*:
+
+    py.test src/onegov.*
 
 ## Run Tests with Tox
 
