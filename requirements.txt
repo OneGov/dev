@@ -21,6 +21,7 @@
 -e git+https://github.com/onegov/onegov.page#egg=onegov.page[test]
 -e git+https://github.com/onegov/onegov.pay#egg=onegov.pay[test]
 -e git+https://github.com/onegov/onegov.people#egg=onegov.people[test]
+-e git+https://github.com/onegov/onegov.quill#egg=onegov.quill[test]
 -e git+https://github.com/onegov/onegov.recipient#egg=onegov.recipient[test]
 -e git+https://github.com/onegov/onegov.reservation#egg=onegov.reservation[test]
 -e git+https://github.com/onegov/onegov.search#egg=onegov.search[test]
