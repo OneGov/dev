@@ -19,7 +19,8 @@ install: in_virtual_env
 	# gather eggs
 	scrambler --target eggs
 
-update: in_virtual_env
+update: in_virtual_env if_all_committed
+
 	# update sources
 	find src -type d -depth 1 -exec git --git-dir={}/.git --work-tree={} pull origin master \;
 
@@ -35,6 +36,11 @@ update: in_virtual_env
 in_virtual_env:
 	@if python -c 'import sys; hasattr(sys, "real_prefix") and sys.exit(1) or sys.exit(0)'; then \
 		echo "An active virtual environment is required"; exit 1; \
+		else true; fi
+
+if_all_committed:
+	@ if uncommitted -nu src | grep -q Git; then \
+		echo "Commit and push all your changes before updating"; exit 1; \
 		else true; fi
 
 test: in_virtual_env
