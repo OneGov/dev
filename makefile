@@ -19,10 +19,10 @@ install: in_virtual_env
 	# gather eggs
 	scrambler --target eggs
 
-update: in_virtual_env if_all_committed
+update: in_virtual_env if_all_committed if_all_on_master_branch
 
 	# update sources
-	find src -type d -depth 1 -exec git --git-dir={}/.git --work-tree={} pull origin master \;
+	find src -type d -depth 1 -exec echo ""\; -exec echo "{}" \; -exec git --git-dir={}/.git --work-tree={} pull \;
 
 	# update docs
 	cd docs && git pull
@@ -39,9 +39,19 @@ in_virtual_env:
 		else true; fi
 
 if_all_committed:
+	# pip has the nasty habit of overriding local changes when updating
 	@ if uncommitted -nu src | grep -q Git; then \
 		echo "Commit and push all your changes before updating"; exit 1; \
 		else true; fi
+
+if_all_on_master_branch:
+	# pip will muck with the branches other than master in weird ways
+	@ for repository in src/*; do \
+    	if git -C "$${repository}" name-rev --name-only HEAD | grep -vq master; then\
+    		echo "$${repository} is not on the master branch";\
+    		echo "Make sure all repositories are on the master branch before updating";\
+    		exit 1;\
+		fi; done
 
 test: in_virtual_env
 	find src -type d -depth 1 \
