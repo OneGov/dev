@@ -39,13 +39,13 @@ in_virtual_env:
 		else true; fi
 
 if_all_committed:
-	# pip has the nasty habit of overriding local changes when updating
+	@ # pip has the nasty habit of overriding local changes when updating
 	@ if uncommitted -nu src | grep -q Git; then \
 		echo "Commit and push all your changes before updating"; exit 1; \
 		else true; fi
 
 if_all_on_master_branch:
-	# pip will muck with the branches other than master in weird ways
+	@ # pip will muck with the branches other than master in weird ways
 	@ for repository in src/*; do \
     	if git -C "$${repository}" name-rev --name-only HEAD | grep -vq master; then\
     		echo "$${repository} is not on the master branch";\
