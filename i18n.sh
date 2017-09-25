@@ -2,7 +2,7 @@
 #
 # This script helps to add and update gettext translations to onegov modules.
 #
-MODULE="${1}"
+MODULE="${1/-/_}"
 LANGUAGE="${2}"
 
 set -eu

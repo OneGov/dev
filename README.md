@@ -1,6 +1,6 @@
 # Development Environment for Onegov
 
-About OneGov: http://onegov.readthedocs.org/en/latest
+About OneGov: http://docs.onegovcloud.ch/
 
 Requirements:
 
