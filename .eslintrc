@@ -1,5 +1,10 @@
 {
-    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 5,
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
     "env": {
         "browser": true,
         "node": false,
@@ -8,9 +13,6 @@
     "plugins": [
         "react"
     ],
-    "ecmaFeatures": {
-        "jsx": true,
-    },
     "rules": {
         "accessor-pairs": [2, {"getWithoutSet": false, "setWithoutGet": true}],
         "array-bracket-spacing": [1, "never"],
@@ -151,7 +153,7 @@
         "no-unneeded-ternary": [1, {"defaultAssignment": true}],
         "no-unreachable": 2,
         "no-unused-expressions": 2,
-        "no-unused-vars": [1, {"vars": "all", "args": "all", "argsIgnorePattern": "^_"}],
+        "no-unused-vars": [1, {"vars": "local", "args": "all", "argsIgnorePattern": "^_"}],
         "no-use-before-define": 1,
         "no-useless-call": 1,
         "no-useless-concat": 2,
@@ -220,7 +222,7 @@
         "space-infix-ops": [1, {"int32Hint": false}],
         "space-unary-ops": [1, {"words": true, "nonwords": false}],
         "spaced-comment": [1, "always", {"exceptions": ["/"]}],
-        "strict": [2, "global"],
+        "strict": [0, "global"],
         "use-isnan": 2,
         "valid-jsdoc": 0,
         "valid-typeof": 2,
