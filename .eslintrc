@@ -62,7 +62,7 @@
         "newline-after-var": 0,
         "no-alert": 1,
         "no-array-constructor": 1,
-        "no-bitwise": 1,
+        "no-bitwise": 0,
         "no-caller": 2,
         "no-catch-shadow": 0,
         "no-class-assign": 2,
