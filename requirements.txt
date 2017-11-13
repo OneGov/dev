@@ -20,6 +20,7 @@
 -e git+git@github.com:Onegov/onegov.notice.git#egg=onegov.notice[test]
 -e git+git@github.com:Onegov/onegov.page.git#egg=onegov.page[test]
 -e git+git@github.com:Onegov/onegov.pay.git#egg=onegov.pay[test]
+-e git+git@github.com:Onegov/onegov.pdf.git#egg=onegov.pdf[test]
 -e git+git@github.com:Onegov/onegov.people.git#egg=onegov.people[test]
 -e git+git@github.com:Onegov/onegov.quill.git#egg=onegov.quill[test]
 -e git+git@github.com:Onegov/onegov.recipient.git#egg=onegov.recipient[test]
