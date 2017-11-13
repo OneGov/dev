@@ -109,3 +109,6 @@ scripts/
 
 # custom extra requirements
 extras.txt
+
+# Profiling information
+profiles/*

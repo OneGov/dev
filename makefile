@@ -17,6 +17,7 @@ install: in_virtual_env
 	mkdir -p ./profiles
 
 	# gather eggs
+	rm -rf ./eggs
 	scrambler --target eggs
 
 update: in_virtual_env if_all_committed if_all_on_master_branch
