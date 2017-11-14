@@ -112,3 +112,6 @@ extras.txt
 
 # Profiling information
 profiles/*
+
+# Selenium
+selenium/
