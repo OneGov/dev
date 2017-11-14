@@ -36,6 +36,7 @@
 -e git+https://github.com/onegov/onegov.org#egg=onegov.org[test]
 -e git+https://github.com/onegov/onegov.town#egg=onegov.town[test]
 -e git+https://github.com/onegov/onegov.feriennet#egg=onegov.feriennet[test]
+-e git+https://github.com/onegov/onegov.intranet#egg=onegov.intranet[test]
 -e git+https://github.com/onegov/onegov.onboarding#egg=onegov.onboarding[test]
 -e git+https://github.com/onegov/onegov.applications#egg=onegov.applications
 
