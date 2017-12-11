@@ -36,6 +36,7 @@
 -e git+git@github.com:Onegov/onegov.org.git#egg=onegov.org[test]
 -e git+git@github.com:Onegov/onegov.town.git#egg=onegov.town[test]
 -e git+git@github.com:Onegov/onegov.feriennet.git#egg=onegov.feriennet[test]
+-e git+git@github.com:Onegov/onegov.intranet#egg=onegov.intranet[test]
 -e git+git@github.com:Onegov/onegov.onboarding.git#egg=onegov.onboarding[test]
 -e git+git@github.com:Onegov/onegov.applications.git#egg=onegov.applications
 
