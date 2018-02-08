@@ -42,16 +42,13 @@
 -e git+https://github.com/onegov/onegov.applications#egg=onegov.applications
 
 # a replacement for buildout's omelette
-git+https://github.com/href/scrambler#egg=scrambler
+scrambler>=0.0.5
 
 # used to update outdated packages
 pip-review
 
 # to show uncommitted changes
 uncommitted
-
-# to link all eggs into a single folder
-git+https://github.com/href/scrambler#egg=scrambler
 
 # profiling tools
 gprof2dot
