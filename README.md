@@ -4,7 +4,7 @@ About OneGov: http://docs.onegovcloud.ch/
 
 Requirements:
 
-    - Python 3.4+
+    - Python 3.6+
     - Postgres 10+
     - POSIX platform (Linux, FreeBSD, macOS)
 

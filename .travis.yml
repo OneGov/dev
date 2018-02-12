@@ -1,7 +1,7 @@
 # runs the buildout and tests onegov.org, because that's the package with
 # the most dependencies and number of tests
 language: python
-python: "3.5"
+python: "3.6"
 
 # required for google chrome
 dist: trusty

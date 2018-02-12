@@ -22,3 +22,6 @@ linters:
 
   ImportantRule:
     enabled: false
+
+  ColorVariable:
+    enabled: false
