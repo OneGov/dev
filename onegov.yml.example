@@ -17,14 +17,25 @@ applications:
       allow_shift_f5_compile: false
       sql_query_report: false
       profile: false
-      mail_host: localhost
-      mail_port: 1025
-      mail_force_tls: false
-      mail_username:
-      mail_password:
-      mail_sender: mail@onegovcloud.ch
-      mail_use_directory: true
-      mail_directory: './mails'
+      mail:
+        transactional:
+          host: localhost
+          port: 1025
+          force_tls: false
+          username:
+          password:
+          sender: mail@onegovcloud.ch
+          use_directory: true
+          directory: './mails'
+        marketing:
+          host: localhost
+          port: 1025
+          force_tls: false
+          username:
+          password:
+          sender: mail@onegovcloud.ch
+          use_directory: true
+          directory: './mails'
       mapbox_token:
       payment_provider_defaults:
         stripe_connect:
@@ -34,7 +45,7 @@ applications:
           oauth_gateway: https://oauth.example.org
           # the key needed to authenticate oneself with the gateway
           oauth_gateway_auth: foobar
-          # the client-specific secret that is used to authenticate the 
+          # the client-specific secret that is used to authenticate the
           oauth_gateway_secret: barfoo
 
   - path: /wahlen/*
