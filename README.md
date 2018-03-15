@@ -9,6 +9,7 @@ Requirements:
     - POSIX platform (Linux, FreeBSD, macOS)
 
 Optional:
+
     - Memcached 1.4+
     - Elasticsearch 5.5+
 
