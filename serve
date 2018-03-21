@@ -1,0 +1,29 @@
+#!bin/python
+import bjoern
+import inspect
+import sys
+
+from onegov.server import Config, Server
+
+
+def server_application(configfile):
+    signature = inspect.signature(Server).parameters
+    arguments = {'config': Config.from_yaml_file(configfile)}
+
+    if 'environ_overrides' in signature:
+        # required by bjoern
+        arguments['environ_overrides'] = {'webob.url_encoding': 'latin-1'}
+
+    return Server(**arguments)
+
+
+if __name__ == '__main__':
+    port = 8080
+    application = server_application('onegov.yml')
+
+    # somehow sentry attaches itself to the global exception hook, even if we
+    # set 'install_sys_hook' to False -> so we just reset to the original state
+    # before serving our application (otherwise we get each error report twice)
+    sys.excepthook = sys.__excepthook__
+
+    bjoern.run(application, '127.0.0.1', port, reuse_port=True)
