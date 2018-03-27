@@ -4,3 +4,6 @@ lingua==3.12
 
 # force pytest on travis to be up to date
 pytest>=3.0.6
+
+# this release is broken
+punch.py!=1.4.3
