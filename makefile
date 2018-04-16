@@ -1,9 +1,12 @@
 install: in_virtual_env
+	# use latest pip
+	pip install --upgrade pip
+
 	# install requirements
-	pip install -r requirements.txt -c constraints.txt --src ./src
+	pip install -r requirements.txt -c constraints.txt --src ./src --upgrade-strategy=eager
 
 	# install custom extra requirements if present
-	test -e extras.txt && pip install -r extras.txt -c constraints.txt --src ./src || true
+	test -e extras.txt && pip install -r extras.txt -c constraints.txt --src ./src --upgrade-strategy=eager || true
 
 	# remove install artifacts
 	test -e src/pip-delete-this-directory.txt && rm src/pip-delete-this-directory.txt || true
