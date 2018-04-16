@@ -48,7 +48,7 @@ if_all_committed:
 if_all_on_master_branch:
 	@ # pip will muck with the branches other than master in weird ways
 	@ for repository in src/*; do \
-    	if git -C "$${repository}" name-rev --name-only HEAD | grep -vq master; then\
+    	if git -C "$${repository}" rev-parse --abbrev-ref HEAD | grep -vq master; then\
     		echo "$${repository} is not on the master branch";\
     		echo "Make sure all repositories are on the master branch before updating";\
     		exit 1;\
