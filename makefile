@@ -1,9 +1,12 @@
 install: in_virtual_env
+	# use latest pip
+	pip install --upgrade pip
+
 	# install requirements
-	pip install -r requirements.txt -c constraints.txt --src ./src
+	pip install -r requirements.txt -c constraints.txt --src ./src --upgrade-strategy=eager
 
 	# install custom extra requirements if present
-	test -e extras.txt && pip install -r extras.txt -c constraints.txt --src ./src || true
+	test -e extras.txt && pip install -r extras.txt -c constraints.txt --src ./src --upgrade-strategy=eager || true
 
 	# remove install artifacts
 	test -e src/pip-delete-this-directory.txt && rm src/pip-delete-this-directory.txt || true
@@ -48,7 +51,7 @@ if_all_committed:
 if_all_on_master_branch:
 	@ # pip will muck with the branches other than master in weird ways
 	@ for repository in src/*; do \
-    	if git -C "$${repository}" name-rev --name-only HEAD | grep -vq master; then\
+    	if git -C "$${repository}" rev-parse --abbrev-ref HEAD | grep -vq master; then\
     		echo "$${repository} is not on the master branch";\
     		echo "Make sure all repositories are on the master branch before updating";\
     		exit 1;\
