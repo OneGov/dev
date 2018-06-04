@@ -7,3 +7,7 @@ pytest>=3.0.6
 
 # punch.py keeps breaking, we keep with what works for now
 punch.py==1.4.2
+
+# wtforms is currently capped to 2.2 through onegov.form
+# (our build system gets this, but not our dev environment unfortunately)
+wtforms<2.2
