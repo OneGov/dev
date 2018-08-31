@@ -38,14 +38,12 @@
 -e git+git@github.com:Onegov/onegov.feriennet.git#egg=onegov.feriennet[test]
 -e git+git@github.com:Onegov/onegov.intranet#egg=onegov.intranet[test]
 -e git+git@github.com:Onegov/onegov.onboarding.git#egg=onegov.onboarding[test]
+-e git+git@github.com:Onegov/onegov.swissvotes.git#egg=onegov.swissvotes[test]
 -e git+git@github.com:Onegov/onegov.winterthur.git#egg=onegov.winterthur[test]
 -e git+git@github.com:Onegov/onegov.applications.git#egg=onegov.applications
 
 # a replacement for buildout's omelette
-scrambler>=0.0.5
-
-# used to update outdated packages
-pip-review
+scrambler
 
 # to show uncommitted changes
 uncommitted

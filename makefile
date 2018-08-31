@@ -32,7 +32,7 @@ update: in_virtual_env if_all_committed if_all_on_master_branch
 	cd docs && git pull
 
 	# updating all dependencies, ignoring constraints
-	pip-review --auto
+	pip list --outdated --format=freeze |  sed 's/==/>/g' | pip install --upgrade -r /dev/stdin
 
 	# install all dependencies, applying constraints
 	make install

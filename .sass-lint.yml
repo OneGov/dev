@@ -14,3 +14,6 @@ rules:
   nesting-depth: 0
   force-attribute-nesting: 0
   quotes: 0
+  no-vendor-prefixes: 0
+  no-color-literals: 0
+  no-transition-all: 0
