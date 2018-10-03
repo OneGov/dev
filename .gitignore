@@ -77,6 +77,9 @@ onegov.yml
 file-storage
 depot-storage
 
+# Signing services config
+signing-services
+
 # Buildout fragments
 distribute-*.tar.gz
 
