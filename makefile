@@ -14,9 +14,7 @@ install: in_virtual_env
 	# fetch docs
 	test -e docs/.git || git clone https://github.com/onegov/onegov-docs docs
 
-	# ensure folder structure
-	mkdir -p ./depot-storage
-	mkdir -p ./file-storage
+	# ensure required folder structure
 	mkdir -p ./profiles
 
 	# gather eggs
