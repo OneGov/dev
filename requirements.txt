@@ -31,15 +31,16 @@
 -e git+https://github.com/onegov/onegov.user#egg=onegov.user[test]
 
 # applications
+-e git+https://github.com/onegov/onegov.agency#egg=onegov.agency[test]
 -e git+https://github.com/onegov/onegov.election_day#egg=onegov.election_day[test]
--e git+https://github.com/onegov/onegov.gazette#egg=onegov.gazette[test]
--e git+https://github.com/onegov/onegov.org#egg=onegov.org[test]
--e git+https://github.com/onegov/onegov.town#egg=onegov.town[test]
 -e git+https://github.com/onegov/onegov.feriennet#egg=onegov.feriennet[test]
+-e git+https://github.com/onegov/onegov.gazette#egg=onegov.gazette[test]
 -e git+https://github.com/onegov/onegov.intranet#egg=onegov.intranet[test]
--e git+https://github.com/onegov/onegov.swissvotes#egg=onegov.swissvotes[test]
--e git+https://github.com/onegov/onegov.winterthur#egg=onegov.winterthur[test]
 -e git+https://github.com/onegov/onegov.onboarding#egg=onegov.onboarding[test]
+-e git+https://github.com/onegov/onegov.org#egg=onegov.org[test]
+-e git+https://github.com/onegov/onegov.swissvotes#egg=onegov.swissvotes[test]
+-e git+https://github.com/onegov/onegov.town#egg=onegov.town[test]
+-e git+https://github.com/onegov/onegov.winterthur#egg=onegov.winterthur[test]
 -e git+https://github.com/onegov/onegov.applications#egg=onegov.applications
 
 # a replacement for buildout's omelette
