@@ -31,16 +31,17 @@
 -e git+git@github.com:Onegov/onegov.user.git#egg=onegov.user[test]
 
 # applications
+-e git+git@github.com:Onegov/onegov.agency.git#egg=onegov.agency[test]
+-e git+git@github.com:Onegov/onegov.applications.git#egg=onegov.applications
 -e git+git@github.com:Onegov/onegov.election_day.git#egg=onegov.election_day[test]
--e git+git@github.com:Onegov/onegov.gazette.git#egg=onegov.gazette[test]
--e git+git@github.com:Onegov/onegov.org.git#egg=onegov.org[test]
--e git+git@github.com:Onegov/onegov.town.git#egg=onegov.town[test]
 -e git+git@github.com:Onegov/onegov.feriennet.git#egg=onegov.feriennet[test]
+-e git+git@github.com:Onegov/onegov.gazette.git#egg=onegov.gazette[test]
 -e git+git@github.com:Onegov/onegov.intranet#egg=onegov.intranet[test]
 -e git+git@github.com:Onegov/onegov.onboarding.git#egg=onegov.onboarding[test]
+-e git+git@github.com:Onegov/onegov.org.git#egg=onegov.org[test]
 -e git+git@github.com:Onegov/onegov.swissvotes.git#egg=onegov.swissvotes[test]
+-e git+git@github.com:Onegov/onegov.town.git#egg=onegov.town[test]
 -e git+git@github.com:Onegov/onegov.winterthur.git#egg=onegov.winterthur[test]
--e git+git@github.com:Onegov/onegov.applications.git#egg=onegov.applications
 
 # a replacement for buildout's omelette
 scrambler

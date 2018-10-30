@@ -14,6 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
+etc/
 lib/
 lib64/
 parts/
@@ -77,6 +78,9 @@ onegov.yml
 file-storage
 depot-storage
 
+# Signing services config
+signing-services
+
 # Buildout fragments
 distribute-*.tar.gz
 
@@ -116,3 +120,6 @@ profiles/*
 
 # Selenium
 selenium/
+
+# Tagmap
+tagmap.csv
