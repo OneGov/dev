@@ -15,7 +15,6 @@
 -e git+https://github.com/onegov/onegov.form#egg=onegov.form[test]
 -e git+https://github.com/onegov/onegov.foundation#egg=onegov.foundation[test]
 -e git+https://github.com/onegov/onegov.gis#egg=onegov.gis[test]
--e git+https://github.com/onegov/onegov.invoice#egg=onegov.invoice[test]
 -e git+https://github.com/onegov/onegov.newsletter#egg=onegov.newsletter[test]
 -e git+https://github.com/onegov/onegov.notice#egg=onegov.notice[test]
 -e git+https://github.com/onegov/onegov.page#egg=onegov.page[test]
