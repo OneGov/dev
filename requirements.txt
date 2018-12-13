@@ -15,7 +15,6 @@
 -e git+git@github.com:Onegov/onegov.form.git#egg=onegov.form[test]
 -e git+git@github.com:Onegov/onegov.foundation.git#egg=onegov.foundation[test]
 -e git+git@github.com:Onegov/onegov.gis.git#egg=onegov.gis[test]
--e git+git@github.com:Onegov/onegov.invoice.git#egg=onegov.invoice[test]
 -e git+git@github.com:Onegov/onegov.newsletter.git#egg=onegov.newsletter[test]
 -e git+git@github.com:Onegov/onegov.notice.git#egg=onegov.notice[test]
 -e git+git@github.com:Onegov/onegov.page.git#egg=onegov.page[test]
