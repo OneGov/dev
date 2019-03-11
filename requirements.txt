@@ -40,6 +40,7 @@
 -e git+git@github.com:Onegov/onegov.org.git#egg=onegov.org[test]
 -e git+git@github.com:Onegov/onegov.swissvotes.git#egg=onegov.swissvotes[test]
 -e git+git@github.com:Onegov/onegov.town.git#egg=onegov.town[test]
+-e git+git@github.com:Onegov/onegov.wtfs.git#egg=onegov.wtfs[test]
 -e git+git@github.com:Onegov/onegov.winterthur.git#egg=onegov.winterthur[test]
 
 # a replacement for buildout's omelette
@@ -61,7 +62,6 @@ punch.py
 
 # pytest plugins
 pytest-cov
-pytest-profiling
 pytest-xdist
 
 # jupyter notebooks
