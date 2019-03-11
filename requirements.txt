@@ -40,6 +40,7 @@
 -e git+https://github.com/onegov/onegov.swissvotes#egg=onegov.swissvotes[test]
 -e git+https://github.com/onegov/onegov.town#egg=onegov.town[test]
 -e git+https://github.com/onegov/onegov.winterthur#egg=onegov.winterthur[test]
+-e git+https://github.com/onegov/onegov.wtfs#egg=onegov.wtfs[test]
 -e git+https://github.com/onegov/onegov.applications#egg=onegov.applications
 
 # a replacement for buildout's omelette
