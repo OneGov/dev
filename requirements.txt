@@ -61,7 +61,6 @@ punch.py
 
 # pytest plugins
 pytest-cov
-pytest-profiling
 pytest-xdist
 
 # jupyter notebooks
