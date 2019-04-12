@@ -199,6 +199,10 @@ result in a timestamp profile file in the profiles folder for each request.
 You may then use the pstats profile browser as described here:
 http://stefaanlippens.net/python_profiling_with_pstats_interactive_mode
 
+Or convert it to an SVG use gprof2dot
+
+    gprof2dot -f pstats profiles/[profile file] | dot -Tsvg -o output.svg
+
 Another possiblilty is to run `py.test` with `pytest-profiling`, which creates
 a nice SVG:
 
