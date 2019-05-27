@@ -36,7 +36,7 @@ update: in_virtual_env if_all_committed if_all_on_master_branch
 	make install
 
 in_virtual_env:
-	@if python -c 'import sys; hasattr(sys, "real_prefix") and sys.exit(1) or sys.exit(0)'; then \
+	@if python -c 'import sys; (hasattr(sys, "real_prefix") or (hasattr(sys, "base_prefix") and sys.base_prefix != sys.prefix)) and sys.exit(1) or sys.exit(0)'; then \
 		echo "An active virtual environment is required"; exit 1; \
 		else true; fi
 
