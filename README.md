@@ -18,6 +18,7 @@ Optional:
 To install, create a new virtual environment and run make:
 
     virtualenv -p python3 .
+    source bin/activate
     make install
 
 ## Update the Development Environment
