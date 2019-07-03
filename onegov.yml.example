@@ -124,69 +124,69 @@ configuration: &global-config
 # All supported applications
 applications:
 
-  - path: /onegov_town/*
+  - path: /town/*
     application: onegov.town.TownApp
-    namespace: onegov_town
+    namespace: town
     configuration:
       <<: *global-config
 
-  - path: /onegov_agency/*
+  - path: /agency/*
     application: onegov.agency.AgencyApp
-    namespace: onegov_agency
+    namespace: agency
     configuration:
       <<: *global-config
 
-  - path: /onegov_org/*
+  - path: /org/*
     application: onegov.org.OrgApp
-    namespace: onegov_org
+    namespace: org
     configuration:
       <<: *global-config
 
-  - path: /onegov_feriennet/*
+  - path: /feriennet/*
     application: onegov.feriennet.FeriennetApp
-    namespace: onegov_feriennet
+    namespace: feriennet
     configuration:
       <<: *global-config
 
   - path: /onegov_election_day/*
     application: onegov.election_day.ElectionDayApp
-    namespace: onegov_election_day
+    namespace: election_day
     configuration:
       <<: *global-config
 
-  - path: /onegov_intranet/*
+  - path: /intranet/*
     application: onegov.intranet.IntranetApp
-    namespace: onegov_intranet
+    namespace: intranet
     configuration:
       <<: *global-config
 
-  - path: /onegov_winterthur/*
+  - path: /winterthur/*
     application: onegov.winterthur.WinterthurApp
-    namespace: onegov_winterthur
+    namespace: winterthur
     configuration:
       <<: *global-config
 
-  - path: /onegov_swissvotes/*
+  - path: /swissvotes/*
     application: onegov.swissvotes.SwissvotesApp
-    namespace: onegov_swissvotes
+    namespace: swissvotes
     configuration:
       <<: *global-config
 
-  - path: /onegov_wtfs/*
+  - path: /wtfs/*
     application: onegov.wtfs.WtfsApp
-    namespace: onegov_wtfs
+    namespace: wtfs
     configuration:
       <<: *global-config
 
   - path: /onegov_onboarding
     application: onegov.onboarding.OnboardingApp
-    namespace: onegov_onboarding
+    namespace: onboarding
     configuration:
       <<: *global-config
 
       onboarding:
         onegov.town:
-          namespace: onegov_town
+          namespace: town
           domain: onegov.test
           configuration:
             depot_backend: depot.io.local.LocalFileStorage
