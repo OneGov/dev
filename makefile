@@ -24,7 +24,7 @@ install: in_virtual_env
 update: in_virtual_env if_all_committed if_all_on_master_branch
 
 	# update sources
-	find src -type d -depth 1 -exec echo ""\; -exec echo "{}" \; -exec git --git-dir={}/.git --work-tree={} pull \;
+	find src -type d -maxdepth 1 -exec echo ""\; -exec echo "{}" \; -exec git --git-dir={}/.git --work-tree={} pull \;
 
 	# update docs
 	cd docs && git pull
@@ -56,7 +56,7 @@ if_all_on_master_branch:
 		fi; done
 
 test: in_virtual_env
-	find src -type d -depth 1 \
+	find src -type d -maxdepth 1 \
 		-not \( -path src/onegov-testing -prune \) \
 		-not \( -path src/onegov.applications -prune \) \
 		-print0 | xargs -n 1 -0 py.test
