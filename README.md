@@ -51,7 +51,7 @@ you need to run:
 You also need to have the following header files installed:
 
     sudo apt-get install libcurl4-openssl-dev libffi-dev libjpeg-dev libpq-dev libxml2-dev libxslt1-dev zlib1g-dev
-    
+
 You also need poppler (pdf creation):
 
     sudo apt install libpoppler-cpp-dev
@@ -98,19 +98,19 @@ To use OneGov Town you need to define a town first. Run the
 following command to define a new town (there is currently no way to do it
 through the web interface).
 
-    bin/onegov-town --select /town/govikon add Govikon
+    bin/onegov-town --select /onegov_town/govikon add Govikon
 
 You also might want to define an admin to manage the site. Run the following
 command to define a user with admin role.
 
-    bin/onegov-user --select /town/govikon add admin admin@example.org --no-prompt --password test
+    bin/onegov-user --select /onegov_town/govikon add admin admin@example.org --no-prompt --password test
 
 Having done that, start the onegov server as follows:
 
     bin/onegov-server
 
 And point your browser to
-[http://localhost:8080/town/govikon](http://localhost:8080/towns/govikon).
+[http://localhost:8080/onegov_town/govikon](http://localhost:8080/onegov_town/govikon).
 
 ## Setup OneGov Election Day
 
@@ -119,11 +119,11 @@ basically the canton using the application.
 
 To do this for the canton of zg for example you create the following directory:
 
-    mkdir -p file-storage/election_day-zg
+    mkdir -p file-storage/onegov_election_day-zg
 
 Then you create a file containing the information about the canton:
 
-    touch file-storage/election_day-zg/principal.yml
+    touch file-storage/onegov_election_day-zg/principal.yml
 
 Inside you configure the principal (example content):
 
@@ -136,7 +136,7 @@ The logo points to a file in the same directory as the yml file.
 
 You also want to add a user, which you can do as follows:
 
-    bin/onegov-user --select /election_day/zg add admin admin@example.org
+    bin/onegov-user --select /onegov_election_day/zg add admin admin@example.org
 
 Having done that, start the onegov server as follows:
 

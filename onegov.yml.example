@@ -124,45 +124,45 @@ configuration: &global-config
 # All supported applications
 applications:
 
-  - path: /town/*
+  - path: /onegov_town/*
     application: onegov.town.TownApp
-    namespace: town
+    namespace: onegov_town
     configuration:
       <<: *global-config
 
-  - path: /agency/*
+  - path: /onegov_agency/*
     application: onegov.agency.AgencyApp
-    namespace: agency
+    namespace: onegov_agency
     configuration:
       <<: *global-config
 
-  - path: /org/*
+  - path: /onegov_org/*
     application: onegov.org.OrgApp
-    namespace: org
+    namespace: onegov_org
     configuration:
       <<: *global-config
 
-  - path: /feriennet/*
+  - path: /onegov_feriennet/*
     application: onegov.feriennet.FeriennetApp
-    namespace: feriennet
+    namespace: onegov_feriennet
     configuration:
       <<: *global-config
 
   - path: /onegov_election_day/*
     application: onegov.election_day.ElectionDayApp
-    namespace: election_day
+    namespace: onegov_election_day
     configuration:
       <<: *global-config
 
-  - path: /intranet/*
+  - path: /onegov_intranet/*
     application: onegov.intranet.IntranetApp
-    namespace: intranet
+    namespace: onegov_intranet
     configuration:
       <<: *global-config
 
-  - path: /winterthur/*
+  - path: /onegov_winterthur/*
     application: onegov.winterthur.WinterthurApp
-    namespace: winterthur
+    namespace: onegov_winterthur
     configuration:
       <<: *global-config
 
@@ -172,21 +172,21 @@ applications:
     configuration:
       <<: *global-config
 
-  - path: /wtfs/*
+  - path: /onegov_wtfs/*
     application: onegov.wtfs.WtfsApp
-    namespace: wtfs
+    namespace: onegov_wtfs
     configuration:
       <<: *global-config
 
   - path: /onegov_onboarding
     application: onegov.onboarding.OnboardingApp
-    namespace: onboarding
+    namespace: onegov_onboarding
     configuration:
       <<: *global-config
 
       onboarding:
         onegov.town:
-          namespace: town
+          namespace: onegov_town
           domain: onegov.test
           configuration:
             depot_backend: depot.io.local.LocalFileStorage
