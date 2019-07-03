@@ -51,6 +51,10 @@ you need to run:
 You also need to have the following header files installed:
 
     sudo apt-get install libcurl4-openssl-dev libffi-dev libjpeg-dev libpq-dev libxml2-dev libxslt1-dev zlib1g-dev
+    
+You also need poppler (pdf creation):
+
+    sudo apt install libpoppler-cpp-dev
 
 ## Folder Structure
 
