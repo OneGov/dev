@@ -145,6 +145,15 @@ Having done that, start the onegov server as follows:
 And point your browser to
 [http://localhost:8080/wahlen/zg](http://localhost:8080/wahlen/zg).
 
+## Transfer Files from live server
+
+To transfer files from a remote server (e.g. onegov-agency), you can take the following steps:
+
+1. Find out the hostname of the live server, e.g. *staatskalender-ar.onegovcloud.ch*
+2. Use `pet whereis staatskalender-ar.onegovcloud.ch` which returns the server the app was deployed on.
+3. ssh into the remote server to find out where `onegov.yml` is located, in general in `/opt/onegov/onegov.yml` directory.
+4. Launch the command to copy the files: `onegov-core transfer <hostname> /opt/onegov/onegov.yml`
+
 ## Run Tests
 
 To run the tests of a specific module:
