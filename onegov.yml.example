@@ -166,9 +166,9 @@ applications:
     configuration:
       <<: *global-config
 
-  - path: /swissvotes/*
+  - path: /onegov_swissvotes/*
     application: onegov.swissvotes.SwissvotesApp
-    namespace: swissvotes
+    namespace: onegov_swissvotes
     configuration:
       <<: *global-config
 
