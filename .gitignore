@@ -126,3 +126,6 @@ selenium/
 
 # Tagmap
 tagmap.csv
+
+# Exclude Kerberos keytabs
+*.keytab
