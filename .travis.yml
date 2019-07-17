@@ -19,7 +19,7 @@ addons:
             - libpoppler-cpp-dev
             - libgnutls28-dev
             - libev-dev
-            - libcurl4-openssl-dev
+            - libcurl4-gnutls-dev
             - libssl-dev
 
 install: ./.travis.sh
