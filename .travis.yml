@@ -2,6 +2,7 @@
 # the most dependencies and number of tests
 language: python
 python: "3.6"
+jdk: openjdk11
 dist: xenial
 
 env:
@@ -12,7 +13,6 @@ addons:
     chrome: stable
     apt:
         packages:
-            - openjdk-8-jre-headless
             - ghostscript
             - libpoppler-cpp-dev
             - libgnutls28-dev
