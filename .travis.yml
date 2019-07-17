@@ -13,7 +13,6 @@ addons:
     apt:
         packages:
             - openjdk-8-jre-headless
-            - google-chrome-stable
             - ghostscript
             - libpoppler-cpp-dev
             - libgnutls28-dev
