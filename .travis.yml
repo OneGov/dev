@@ -17,6 +17,8 @@ addons:
             - google-chrome-stable
             - ghostscript
             - libpoppler-cpp-dev
+            - libgnutls28-dev
+            - libev-dev
 
 install: ./.travis.sh
 
