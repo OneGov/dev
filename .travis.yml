@@ -18,6 +18,4 @@ addons:
             - libgnutls28-dev
             - libev-dev
 
-install: ./.travis.sh
-
-script: py.test src/onegov.org -s -v
+script: make install
