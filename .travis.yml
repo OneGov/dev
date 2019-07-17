@@ -2,15 +2,14 @@
 # the most dependencies and number of tests
 language: python
 python: "3.6"
-
-# required for google chrome
-dist: trusty
+dist: xenial
 
 env:
     - ES_VERSION=5.5.2
 
 addons:
     postgresql: "9.6"
+    chrome: stable
     apt:
         packages:
             - openjdk-8-jre-headless
@@ -19,8 +18,6 @@ addons:
             - libpoppler-cpp-dev
             - libgnutls28-dev
             - libev-dev
-            - libcurl4-gnutls-dev
-            - libssl-dev
 
 install: ./.travis.sh
 
