@@ -193,7 +193,7 @@ To run a specific test:
 
 ## Add New Development Packages
 
-To add a package that should only be availalable in the development environment,
+To add a package that should only be available in the development environment,
 add it to requirements.txt
 
 Version pins should be added to constraints.txt
