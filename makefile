@@ -29,8 +29,8 @@ update: in_virtual_env if_all_committed if_all_on_master_branch
 	# update docs
 	cd docs && git pull
 
-	# updating all dependencies, ignoring constraints
-	pip list --outdated --format=freeze |  sed 's/==/>/g' | pip install --upgrade -r /dev/stdin
+	# updating all dependencies
+	pip list --outdated --format=freeze |  sed 's/==/>/g' | pip install --upgrade -r /dev/stdin -c constraints.txt
 
 	# install all dependencies, applying constraints
 	make install

@@ -7,3 +7,6 @@ pytest>=3.0.6
 
 # punch.py keeps breaking, we keep with what works for now
 punch.py==1.4.2
+
+# docutils borked their 0.15 release
+docutils!=0.15.*
